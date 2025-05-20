@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "689569498562",
+    "project_id": "miclase-30e23",
+    "storage_bucket": "miclase-30e23.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689569498562:android:cabf0b0daf25bb8bd4025b",
+        "android_client_info": {
+          "package_name": "com.romancastro.miclase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689569498562-94aeha11cuo2kju7ipoj8rj8g9bnmloi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.romancastro.miclase",
+            "certificate_hash": "464d80f274501a4b504a80050b73c36b8ec216fc"
+          }
+        },
+        {
+          "client_id": "689569498562-deekl24kj0gv0virk84fjmovnpje6vmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-VPVmYIt-M4efFHWIyKsMbahvMdceGBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689569498562-deekl24kj0gv0virk84fjmovnpje6vmr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "689569498562-2j4onll2ige39t3aud8n6fbj5urrfjqb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.romancastro.miclase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
