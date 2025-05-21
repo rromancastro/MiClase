@@ -6,6 +6,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
+import emailExists from "../firebase/userExists";
 
 export default function CreateAccountScreen({ navigation }) {
     const [nombre, setNombre] = useState("")
@@ -22,6 +23,7 @@ export default function CreateAccountScreen({ navigation }) {
 
     //errores
     const [emailDistinto, setEmailDistinto] = useState(false)
+    const [emailExiste, setEmailExiste] = useState(false)
     const [emailInvalido, setEmailInvalido] = useState(false)
 
     const [contrasenaDistinta, setContrasenaDistinta] = useState(false)
@@ -36,6 +38,7 @@ export default function CreateAccountScreen({ navigation }) {
             rol: rolValue,
             nombre: nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase(),
             apellido: apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase(),
+            aulas: []
             });
             console.log("Documento agregado con ID:", docRef.id);
         } catch (error) {
@@ -44,8 +47,13 @@ export default function CreateAccountScreen({ navigation }) {
     };
 
     //crear usuario
-    const handleCreateUser = () => {
-        if (email !== email2) {
+    const handleCreateUser = async () => {
+        const existe = await emailExists(email);
+        if (existe) {
+            setEmailExiste(true)
+        } else {
+            setEmailExiste(false)
+            if (email !== email2) {
             setEmailDistinto(true)
         } else {
             setEmailDistinto(false)
@@ -71,10 +79,12 @@ export default function CreateAccountScreen({ navigation }) {
                         .catch((error) => {
                             const errorCode = error.code;
                             const errorMessage = error.message;
+                            console.log(errorCode + errorMessage)
                         });   
                     }
                 }
             }
+        }
         }
 
         
@@ -148,6 +158,9 @@ export default function CreateAccountScreen({ navigation }) {
                 emailDistinto == true ? <Text style={styles.errorText}t>Los correos no coinciden</Text> : null
             }
             {
+                emailExiste == true ? <Text style={styles.errorText}t>Este correo ya está registrado</Text> : null
+            }
+            {
                 emailInvalido == true ? <Text style={styles.errorText}>El correo es invalido</Text> : null
             }
             {
@@ -165,7 +178,7 @@ export default function CreateAccountScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#F8F6F0',
     alignItems: 'center',
     justifyContent: 'center',
   },

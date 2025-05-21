@@ -40,7 +40,7 @@ export default function LoginComponent() {
 
       if (!querySnapshot.empty) {
         const docData = querySnapshot.docs[0].data();
-        setUserData(docData); // Guardar en contexto
+        setUserData({...docData, id: querySnapshot.docs[0].id}); // Guardar en contexto
         navigation.replace("Main");
       } else {
         console.log("No se encontró el documento del usuario en Firestore.");
@@ -85,7 +85,7 @@ export default function LoginComponent() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fafafa',
+    backgroundColor: '#F8F6F0',
   },
   input: {
     color: 'grey',
@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     fontSize: 19,
     width: 320,
-    fontWeight: '300'
+    fontWeight: '300',
+    backgroundColor: '#fafafa'
   },
   inputPassword: {
     color: 'grey',
@@ -106,7 +107,8 @@ const styles = StyleSheet.create({
     fontSize: 19,
     width: 320,
     fontWeight: '300',
-    marginBottom: 15
+    marginBottom: 15,
+    backgroundColor: '#fafafa'
   },
   buttonAcceder: {
     backgroundColor: '#4D8CE7',
