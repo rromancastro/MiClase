@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
@@ -9,6 +9,39 @@ import { Picker } from "@react-native-picker/picker";
 import emailExists from "../firebase/userExists";
 
 export default function CreateAccountScreen({ navigation }) {
+
+    const [avatarId, setAvatarId] = useState(require('../assets/avatars/1.png'))
+
+    const avatarsIds = {
+        '1': require('../assets/avatars/1.png'),
+        '2': require('../assets/avatars/2.png'),
+        '3': require('../assets/avatars/3.png'),    
+        '4': require('../assets/avatars/4.png'),
+        '5': require('../assets/avatars/5.png'),
+        '6': require('../assets/avatars/6.png'),
+        '7': require('../assets/avatars/7.png'),
+        '8': require('../assets/avatars/8.png'),
+        '9': require('../assets/avatars/9.png'),
+        '10': require('../assets/avatars/10.png'),
+        '11': require('../assets/avatars/11.png'),
+        '12': require('../assets/avatars/12.png'),
+        '13': require('../assets/avatars/13.png'),
+        '14': require('../assets/avatars/14.png'),  
+        '15': require('../assets/avatars/15.png'),
+        '16': require('../assets/avatars/16.png'),
+        '17': require('../assets/avatars/17.png'),
+        '18': require('../assets/avatars/18.png'),
+        '19': require('../assets/avatars/19.png'),
+        '20': require('../assets/avatars/20.png'),
+        '21': require('../assets/avatars/21.png'),
+        '22': require('../assets/avatars/22.png'),
+        '23': require('../assets/avatars/23.png'),
+        '24': require('../assets/avatars/24.png'),
+        '25': require('../assets/avatars/25.png'),
+        '26': require('../assets/avatars/26.png'),
+        '27': require('../assets/avatars/27.png'),
+    };
+
     const [nombre, setNombre] = useState("")
     const [apellido, setApellido] = useState("")
 
@@ -38,7 +71,8 @@ export default function CreateAccountScreen({ navigation }) {
             rol: rolValue,
             nombre: nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase(),
             apellido: apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase(),
-            aulas: []
+            aulas: [],
+            avatarRequired: avatarId,
             });
             console.log("Documento agregado con ID:", docRef.id);
         } catch (error) {
@@ -105,9 +139,31 @@ export default function CreateAccountScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <AntDesign name="adduser" size={60} color="white" style={styles.userIcon}/>
+            <View style={styles.userAvatarContainer}>
+                <Image source={avatarId} style={styles.userAvatar}/> 
+            </View>
 
             <Text style={styles.title}>Crear cuenta</Text>
+
+            <View style={styles.avatarSelectContainer}>
+            {Object.keys(avatarsIds).map((id)  => (
+                <TouchableOpacity key={id} onPress={() => setAvatarId(avatarsIds[id])}>
+                <Image
+                    source={avatarsIds[id]}
+                    style={{
+                    ...styles.userAvatar,
+                    width: 40,
+                    height: 40,
+                    margin: 5,
+                    borderRadius: 10,
+                    borderWidth: avatarId === id ? 2 : 0,
+                    borderColor: '#4D8CE7',
+                    }}
+                />
+                </TouchableOpacity>
+            ))}
+            </View>
+
 
             <TextInput style={styles.input} 
                 placeholder="Nombre"
@@ -178,26 +234,36 @@ export default function CreateAccountScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F6F0',
+    backgroundColor: '#fafafa',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  userIcon: {
+  userAvatarContainer: {
     backgroundColor: '#4D8CE7',
-    width: 100,
-    height: 100,
-    padding: 20,
+    width: 120,
+    height: 120,
     borderRadius: 20,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20
+    marginBottom: 20,
+  },
+  userAvatar: {
+    width: 90,
+    height: 90,
+  },
+  avatarSelectContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    
   },
   title: {
     fontWeight: '700',
     color: '#363838',
     fontFamily: 'Roboto',
-    marginBottom: 30,
+    marginBottom: 20,
     fontSize: 35
   },
   input: {

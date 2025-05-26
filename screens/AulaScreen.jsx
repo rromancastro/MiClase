@@ -36,7 +36,7 @@ export default function AulaScreen() {
     if (!aula) return <Loader />;
 
     return (
-        <View style={{backgroundColor: '#F8F6F0', flex: 1}}>
+        <View style={{backgroundColor: '#fafafa', flex: 1}}>
             {
                 userData.rol == 'profesor' ? <ProfesoraAula dataAula={aula} /> : <EstudianteAula />
             }

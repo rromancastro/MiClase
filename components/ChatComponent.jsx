@@ -63,9 +63,6 @@ export const ChatComponent = ({aulaId}) => {
 
 
     return (<View style={styles.container}>
-        <View style={styles.nav}>
-            <Text style={styles.navText}>Chat grupal</Text>
-        </View>
         <ScrollView ref={scrollViewRef} style={styles.mensajesContainer}>
             {
                 mensajes.map((msg) => {
@@ -83,7 +80,7 @@ export const ChatComponent = ({aulaId}) => {
                 value={mensaje}
             />
             <TouchableOpacity onPress={handleSendMensaje}>
-                <FontAwesome name="send" size={20} color="#C7BDB0" style={styles.sendMensajeButton}/>
+                <FontAwesome name="send" size={20} color="#7F8488" style={styles.sendMensajeButton}/>
             </TouchableOpacity>
         </View>
     </View>)
@@ -93,27 +90,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    nav: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        height: screenHeight * 0.07,
-        borderWidth: 1,
-        borderColor: '#E2E1D9'
-    },
-    navText: {
-        fontFamily: 'Roboto',
-        fontSize: 18,
-        color: '#363838'
-    },
     mensajesContainer: {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
         paddingLeft: 20,
         paddingRight: 20,
-        gap: 10
     },
     sendMensajeContainer: {
         display: 'flex',
@@ -121,6 +103,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         justifyContent: 'center',
+        borderTopColor: '#EFEEE7',
+        borderTopWidth: 1,
     },
     sendMensajeInput: {
         width: screenWidth * 0.8,
@@ -135,7 +119,7 @@ const styles = StyleSheet.create({
         outlineStyle: 'none'
     },
     sendMensajeButton: {
-        backgroundColor: '#E2E1D9',
+        backgroundColor: '#E3E5E8',
         padding: 10,
         borderRadius: 10,
     }

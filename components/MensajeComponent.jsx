@@ -39,25 +39,28 @@ export const MensajeComponent = ({ msjData }) => {
 const styles = StyleSheet.create({
     miMensaje: {
         alignSelf: 'flex-end',
+        marginTop: 5
     },
     otroMensaje: {
         alignSelf: 'flex-start',
+        marginTop: 5
     },
     miMensajeTexto: {
-        backgroundColor: '#E2E1D9',
+        backgroundColor: '#4A86DF',
         padding: 10,
         borderRadius: 10,
+        minWidth: screenWidth * 0.1,
         maxWidth: screenWidth * 0.7,
         marginBottom: 5,
         fontFamily: 'Roboto',
         fontSize: 16,
-        color: '#363838',
+        color: '#fafafa',
     },
     miMensajeHora: {
         fontFamily: 'Roboto',
         textAlign: 'right',
         fontSize: 12,
-        color: '#A9A9A9',
+        color: '#7F8488',
         marginLeft: 10
     },
     otroMensajeNombre: {
@@ -68,14 +71,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     otroMensajeTexto: {
-        backgroundColor: '#EFEEE7',
+        backgroundColor: '#E2E5E9',
         padding: 10,
         borderRadius: 10,
+        minWidth: screenWidth * 0.1,
         maxWidth: screenWidth * 0.7,
         marginBottom: 5,
         fontFamily: 'Roboto',
         fontSize: 16,
-        color: '#363838',
+        color: '#080807',
     },
     otroMensajeHora: {
         fontFamily: 'Roboto',

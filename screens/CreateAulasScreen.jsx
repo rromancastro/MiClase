@@ -71,7 +71,8 @@ export default function CreateAulasScreen() {
                     apellidoProfesor: userData.apellido,
                     emailProfesor: userData.email,
                     estudiantes: [],
-                    createdAt: serverTimestamp()
+                    createdAt: serverTimestamp(),
+                    profesores: [`${userData.nombre} ${userData.apellido}`],
                 });
                 console.log("Documento agregado con ID:", docRef.id);
                 await addDoc(collection(db, "aulas", docRef.id, "chat"), {
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 30,
         gap: 20,
-        backgroundColor: '#F8F6F0'
+        backgroundColor: '#fafafa'
     },
     title: {
         fontSize: 36,

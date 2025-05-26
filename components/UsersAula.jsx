@@ -1,32 +1,50 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native"
+import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native"
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export const UsersAula = () => {
-    return (<View style={styles.container}>
-        <View style={styles.nav}>
-            <Text style={styles.navText}>Participantes</Text>
-        </View>
-    </View>)
+export const UsersAula = ({dataAula}) => {
+
+    const estudiantes = dataAula.estudiantes || [];
+    const profesores = dataAula.profesores || [];
+
+    return (<ScrollView style={styles.container}>
+        <Text style={styles.subtitle}>Profesor/res:</Text>
+        {
+            profesores.map((profesor) => {
+                return (
+                    <Text key={profesor} style={styles.userItem}>{profesor}</Text>
+                )
+            })
+        }
+        <Text style={styles.subtitle}>Alumnos:</Text>
+        {
+            estudiantes.length > 0 ? estudiantes.map((estudiante) => {
+                return (
+                    <Text key={estudiante.id} style={styles.userItem}>{estudiante.nombre}</Text>
+                )
+            }) : null
+        }
+    </ScrollView>)
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    nav: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        height: screenHeight * 0.07,
-        borderWidth: 1,
-        borderColor: '#E2E1D9'
+    subtitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginVertical: 10,
+        color: '#7F8488',
+        fontFamily: 'Roboto'
     },
-    navText: {
-        fontFamily: 'Roboto',
-        fontSize: 18,
-        color: '#363838'
-    },
+    userItem: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginVertical: 5,
+        color: '#7F8488',
+        fontFamily: 'Roboto'
+    }   
 })
