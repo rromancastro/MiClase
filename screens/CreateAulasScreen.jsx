@@ -11,6 +11,7 @@ import generateCodeAula from "../helpers/generateCodeAula";
 import { addDoc, arrayUnion, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useUser } from "../contexts/UserContext";
+import { useNavigation } from "@react-navigation/native";
 
 
 
@@ -18,7 +19,9 @@ const screenWidth = Dimensions.get('window').width;
 
 export default function CreateAulasScreen() {
 
-    const {userData} = useUser();
+    const navigation = useNavigation();
+
+    const {userData, setUserData} = useUser();
 
     //logica personalizacion
     const [nombreAula, setNombreAula] = useState('')
@@ -73,12 +76,18 @@ export default function CreateAulasScreen() {
                 console.log("Documento agregado con ID:", docRef.id);
                 await addDoc(collection(db, "aulas", docRef.id, "chat"), {
                     senderName: 'MiClase',
-                    texto: "¡Bienvenido al chat del aula!",
+                    texto: `¡Bienvenido al chat del aula 😁! - "${nombreAula}"`,
                     timestamp: serverTimestamp(),
+                    senderId: 0,
                 });
                 await updateDoc(doc(db, "users", userData.id), {
                     aulas: arrayUnion(docRef.id)
                 });
+                setUserData({
+                    ...userData,
+                    aulas: [...userData.aulas, docRef.id]
+                })
+                navigation.replace("Main")
             } catch (error) {
                 console.error("Error al agregar documento:", error);
             }

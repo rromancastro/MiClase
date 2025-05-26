@@ -6,6 +6,7 @@ import CreateAccountScreen from "../screens/CreateAccountScreen";
 import MainScreen from "../screens/MainScreen";
 import CreateAulasScreen from "../screens/CreateAulasScreen";
 import EditAccountScreen from "../screens/EditAccountScreen";
+import AulaScreen from "../screens/AulaScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,8 @@ export default function AppNavigator() {
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="CreateAulas" component={CreateAulasScreen} />
         <Stack.Screen name="EditAccount" component={EditAccountScreen} />
+        <Stack.Screen name="Aula" component={AulaScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

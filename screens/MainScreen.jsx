@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F8F6F0',
         flex: 1,
         padding: 30,
+        paddingBottom: 0,
         gap: 10
     },
     titleMain: {

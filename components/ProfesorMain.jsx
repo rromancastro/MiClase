@@ -1,9 +1,9 @@
-import { Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useUser } from "../contexts/UserContext"
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { CardAula } from "./CardAula";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import getAulaById from "../firebase/getAulaByIds";
 
@@ -16,17 +16,6 @@ export const ProfesorMain = () => {
     const {userData} = useUser();
     console.log(userData)
 
-    //logica drop
-    const [dropState, setDropState] = useState("closed");
-    const widthAnim = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        Animated.timing(widthAnim, {
-        toValue: dropState === "open" ? 240 : 0,
-        duration: 300,
-        useNativeDriver: false,
-        }).start();
-    }, [dropState]);
 
     //logica aulas
     const [userAulasIds, setUserAulasIds] = useState([])
@@ -53,19 +42,17 @@ export const ProfesorMain = () => {
         <View style={styles.aulasContainer}>
             {aulas.map((aula) => (
                 <CardAula
-                key={aula.id}
-                nombre={aula.nombre}
-                icono={aula.icono}
-                color={aula.color}
-                apellidoProfesor={aula.apellidoProfesor}
+                    key={aula.id}
+                    nombre={aula.nombre}
+                    icono={aula.icono}
+                    color={aula.color}
+                    apellidoProfesor={aula.apellidoProfesor}
+                    id={aula.id}
                 />
             ))}
         </View>
-        <Animated.View style={[styles.dropStateBase, { width: widthAnim }]}>
-            <TouchableOpacity onPress={() => navigation.replace('CreateAulas')}><Text style={styles.dropText} numberOfLines={1} ellipsizeMode="tail">Crear Aula</Text></TouchableOpacity>
-        </Animated.View>
         <View style={styles.utilityes}>
-            <TouchableOpacity onPress={() =>setDropState((prev) => (prev === 'closed' ? 'open' : 'closed'))} style={styles.dropButton}><Ionicons name="add" size={44} color="#fafafa" /></TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.replace("CreateAulas")} style={styles.dropButton}><Text style={styles.dropText}>Crear aula</Text><Ionicons name="add" size={44} color="#fafafa" /></TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.replace("EditAccount")} style={styles.userButton}><FontAwesome6 name="user" size={35} color="white"/></TouchableOpacity>
         </View>
     </View>)
@@ -89,7 +76,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     utilityes: {
-        bottom: 0,
+        bottom: 30,
         position: 'absolute',
         width: screenWidth - 60
     },
@@ -103,26 +90,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     dropButton: {
-        width: 70,
+        width: 170,
         height: 70,
         backgroundColor: '#45799D' ,
         borderRadius: 35,
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         position: 'absolute',
         right: 0
-    },
-    dropStateBase: {
-        position: 'absolute',
-        bottom: 0,
-        right: 25,
-        height: 70,
-        backgroundColor: '#45799D',
-        borderRadius: 15,
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center'
     },
     dropText: {
         color: '#fafafa',

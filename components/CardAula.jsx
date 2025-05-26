@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native"
+import { Dimensions, StyleSheet, Text, TouchableOpacity} from "react-native"
 import Fontisto from '@expo/vector-icons/Fontisto';
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -6,13 +6,21 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get('window').width;
 
 
-export const CardAula = ({color, icono, nombre, apellidoProfesor}) => {
+export const CardAula = ({color, icono, nombre, apellidoProfesor, id}) => {
+
+    const navigation = useNavigation();
+
+    const handlePress = () => {
+        navigation.navigate("Aula", {aulaId: id})
+    }
+
     return (
-        <View style={{...styles.container, backgroundColor: color}}>
+        <TouchableOpacity onPress={handlePress} style={{...styles.container, backgroundColor: color}}>
             {
                     icono == 'calculator' ?  <Ionicons style={styles.cardIcon} name="calculator" size={100} color="#fafafa" /> :
                     icono == 'book' ? <Entypo style={styles.cardIcon} name="book" size={100} color="#fafafa" /> :
@@ -26,7 +34,7 @@ export const CardAula = ({color, icono, nombre, apellidoProfesor}) => {
             }
             <Text style={styles.nombre}>{nombre}</Text>
             <Text style={styles.apellidoProfesor}>{`Prof. ${apellidoProfesor}`}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -37,7 +45,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 20
     },
     cardIcon: {
         marginBottom: 15,
