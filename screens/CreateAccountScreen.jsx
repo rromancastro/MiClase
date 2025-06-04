@@ -1,5 +1,7 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
@@ -8,9 +10,12 @@ import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import emailExists from "../firebase/userExists";
 
+const screenWidth = Dimensions.get('window').width;
+
 export default function CreateAccountScreen({ navigation }) {
 
     const [avatarId, setAvatarId] = useState(require('../assets/avatars/1.png'))
+    const [mostrarAvatars, setMostrarAvatars] = useState(false)
 
     const avatarsIds = {
         '1': require('../assets/avatars/1.png'),
@@ -124,19 +129,6 @@ export default function CreateAccountScreen({ navigation }) {
         
     }
 
-    const handleCreateUser4 = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode + errorMessage)
-            });   
-    }
-
-
     return (
         <View style={styles.container}>
             <View style={styles.userAvatarContainer}>
@@ -145,58 +137,81 @@ export default function CreateAccountScreen({ navigation }) {
 
             <Text style={styles.title}>Crear cuenta</Text>
 
-            <View style={styles.avatarSelectContainer}>
-            {Object.keys(avatarsIds).map((id)  => (
-                <TouchableOpacity key={id} onPress={() => setAvatarId(avatarsIds[id])}>
-                <Image
-                    source={avatarsIds[id]}
-                    style={{
-                    ...styles.userAvatar,
-                    width: 40,
-                    height: 40,
-                    margin: 5,
-                    borderRadius: 10,
-                    borderWidth: avatarId === id ? 2 : 0,
-                    borderColor: '#4D8CE7',
-                    }}
-                />
-                </TouchableOpacity>
-            ))}
-            </View>
+            <TouchableOpacity onPress={()=>setMostrarAvatars(!mostrarAvatars)}><Text style={styles.avatarSelectButton}>Elegir avatar</Text></TouchableOpacity>
+
+            {mostrarAvatars ? <View on style={styles.avatarSelectContainer}>
+                {Object.keys(avatarsIds).map((id)  => (
+                    <TouchableOpacity key={id} onPress={() => setAvatarId(avatarsIds[id])}>
+                    <Image
+                        source={avatarsIds[id]}
+                        style={{
+                        ...styles.userAvatar,
+                        width: 40,
+                        height: 40,
+                        margin: 5,
+                        borderRadius: 10,
+                        borderWidth: avatarId === id ? 2 : 0,
+                        borderColor: '#4D8CE7',
+                        }}
+                    />
+                    </TouchableOpacity>
+                ))}
+            </View> : null}
 
 
-            <TextInput style={styles.input} 
+            <View style={styles.inputContainer}>
+                <FontAwesome5 name="user-alt" size={24} color="#7E848F" />
+                <TextInput style={styles.input} 
                 placeholder="Nombre"
                 value={nombre}
                 onChangeText={setNombre}/>
-            <TextInput style={{...styles.input, marginBottom: '20px'}} 
+            </View>
+
+            <View style={styles.inputContainer}>
+                <FontAwesome5 name="user-alt" size={24} color="#7E848F" />
+                <TextInput style={styles.input} 
                 placeholder="Apellido"
                 value={apellido}
                 onChangeText={setApellido}/>
+            </View>
 
-            <TextInput style={styles.input} 
+            <View style={styles.inputContainer}>
+                <Ionicons name="mail-outline" size={24} color="#7E848F" />
+                <TextInput style={styles.input} 
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
                 keyboardType="email-address"/>
-            <TextInput style={{...styles.input, marginBottom: '20px'}} 
+            </View>
+
+            <View style={styles.inputContainer}>
+                <Ionicons name="mail-outline" size={24} color="#7E848F" />
+                <TextInput style={styles.input} 
                 placeholder="Repetir email"
                 value={email2}
                 onChangeText={setEmail2}
                 autoCapitalize="none"
                 keyboardType="email-address"/>
+            </View>
 
-            <TextInput style={styles.input} 
+            <View style={styles.inputContainer}>
+                <FontAwesome name="lock" size={24} color="#7E848F" />
+                <TextInput style={styles.input} 
                 placeholder="Contraseña"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry/>
-            <TextInput style={{...styles.input, marginBottom: '20px'}} 
+            </View>
+
+            <View style={styles.inputContainer}>
+                <FontAwesome name="lock" size={24} color="#7E848F" />
+                <TextInput style={styles.input} 
                 placeholder="Repetir contraseña"
                 value={password2}
                 onChangeText={setPassword2}
                 secureTextEntry/>
+            </View>
 
             <View style={styles.rolContainer}>
                 <Text style={styles.pickerLabel}>Rol:</Text>
@@ -234,43 +249,67 @@ export default function CreateAccountScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#FBFBFB',
     alignItems: 'center',
     justifyContent: 'center',
   },
   userAvatarContainer: {
     backgroundColor: '#4D8CE7',
-    width: 120,
-    height: 120,
-    borderRadius: 20,
+    width: 140,
+    height: 140,
+    borderRadius: 30,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
   },
   userAvatar: {
-    width: 90,
-    height: 90,
+    width: 110,
+    height: 110,
+  },
+  avatarSelectButton:{
+    fontFamily: 'Roboto',
+    backgroundColor: '#EBEEF2',
+    color: '#363838',
+    fontSize: 20,
+    fontWeight: 600,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginBottom: 10
   },
   avatarSelectContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     justifyContent: 'center',
-    
+    backgroundColor: '#FFFFFF',
+    width: screenWidth * 0.9,
+    borderRadius: 10,
+    marginTop: 50,
+    position: 'absolute',
+    zIndex: 10
   },
   title: {
     fontWeight: '700',
     color: '#363838',
     fontFamily: 'Roboto',
-    marginBottom: 20,
+    marginBottom: 10,
     fontSize: 35
+  },
+  inputContainer:{
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 10,
+    marginBottom: 10,
+    gap: 10,
+    paddingHorizontal: 10
   },
   input: {
     color: 'grey',
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#DAE3E6',
     outlineStyle: 'none',
     fontFamily: 'Roboto',
     fontSize: 19,
@@ -291,19 +330,27 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   rolContainer: {
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
-    gap: 5
+    alignItems: 'center',
+    borderRadius: 10,
+    marginBottom: 10,
+    width: 340,
+    gap: 10,
+    paddingHorizontal:20,
+    paddingVertical: 10
   },
   pickerLabel: {
     fontSize: 19,
     fontWeight: '700',
-    color: '#363838',
-    fontWeight: '400',
+    backgroundColor: '#FFFFFF',
+    color: '#7E848F',
+    fontWeight: '700',
     fontFamily: 'Roboto',
   },
   picker: {
     border: 'none',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#FFFFFF',
     fontFamily: 'Roboto',
     fontSize: 19,
     outlineStyle: 'none',

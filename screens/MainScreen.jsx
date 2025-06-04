@@ -8,7 +8,6 @@ export default function MainScreen(){
     
     return(
         <View style={styles.container}>
-            <Text style={styles.titleMain}>{`¡Hola, ${userData.nombre}!`}</Text>
             {
                 userData.rol == "profesor" ? <ProfesorMain /> : <EstudianteMain />
             }
@@ -18,15 +17,10 @@ export default function MainScreen(){
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fafafa',
+        backgroundColor: '#FBFBFB',
         flex: 1,
         padding: 30,
         paddingBottom: 0,
         gap: 10
-    },
-    titleMain: {
-        fontSize: 36,
-        fontFamily: 'Roboto',
-        fontWeight: '700'
     }
 })

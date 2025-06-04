@@ -1,15 +1,22 @@
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { MensajeComponent } from "./MensajeComponent";
+import { useUser } from "../contexts/UserContext";
+import { Loader } from "./Loader";
+
 import { useEffect, useRef, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { useNavigation } from "@react-navigation/native";
+
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import { MensajeComponent } from "./MensajeComponent";
+
+import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useUser } from "../contexts/UserContext";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 export const ChatComponent = ({aulaId}) => {
+    const navigation = useNavigation();
 
     const [mensaje, setMensaje] = useState("");
 
@@ -47,6 +54,8 @@ export const ChatComponent = ({aulaId}) => {
                 senderId: userData.id,
                 texto: textoLimpio,
                 timestamp: serverTimestamp(),
+                tipo: 'mensaje',
+                avatarRequire: userData.avatarRequired
             });
         } catch (error) {
             console.error("Error al enviar el mensaje:", error);
@@ -63,32 +72,56 @@ export const ChatComponent = ({aulaId}) => {
 
 
     return (<View style={styles.container}>
-        <ScrollView ref={scrollViewRef} style={styles.mensajesContainer}>
-            {
-                mensajes.map((msg) => {
-                    return <MensajeComponent key={msg.id} msjData={msg} />
-                })
-            }
-        </ScrollView>
-        <View style={styles.sendMensajeContainer}>
-            <TextInput style={styles.sendMensajeInput}
-                placeholder="Escribe un mensaje..."
-                placeholderTextColor="#A9A9A9"
-                onChangeText={setMensaje}
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={mensaje}
-            />
-            <TouchableOpacity onPress={handleSendMensaje}>
-                <FontAwesome name="send" size={20} color="#7F8488" style={styles.sendMensajeButton}/>
-            </TouchableOpacity>
-        </View>
-    </View>)
+                <View style={styles.nav}>
+                    <TouchableOpacity onPress={() => navigation.replace("Aula", {aulaId: aulaId})}><AntDesign name="arrowleft" size={34} color='#363838' style={styles.navBack} /></TouchableOpacity>
+                    <Text style={styles.navText}>Chat grupal</Text>
+                </View>
+                {mensajes.length == 0 ? <Loader /> :<ScrollView ref={scrollViewRef} style={styles.mensajesContainer}>
+                    {
+                        mensajes.map((msg) => {
+                            return <MensajeComponent key={msg.id} msjData={msg} aulaId={aulaId}/>
+                        })
+                    }
+                </ScrollView>}
+                <View style={styles.sendMensajeContainer}>
+                    <TextInput style={styles.sendMensajeInput}
+                        placeholder="Escribe un mensaje..."
+                        placeholderTextColor="#A9A9A9"
+                        onChangeText={setMensaje}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        value={mensaje}
+                    />
+                    <TouchableOpacity onPress={handleSendMensaje}>
+                        <FontAwesome name="send" size={20} color="#7F8488" style={styles.sendMensajeButton}/>
+                    </TouchableOpacity>
+                </View>
+            </View>)
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    nav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: screenWidth * .1,
+        height: screenHeight * .08,
+        borderBottomColor: '#EFEEE7',
+        borderBottomWidth: 1,
+        width: screenWidth
+    },
+    navBack: {
+        height: 34,
+        width: 34,
+    },
+    navText: {
+        color: '#363838',
+        fontFamily: 'Roboto',
+        fontSize: 20,
+        fontWeight: 600,
+        marginLeft: 20
     },
     mensajesContainer: {
         flex: 1,
@@ -105,6 +138,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderTopColor: '#EFEEE7',
         borderTopWidth: 1,
+        gap: 10
     },
     sendMensajeInput: {
         width: screenWidth * 0.8,
@@ -115,7 +149,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 16,
         color: '#363838',
-        marginRight: 10,
         outlineStyle: 'none'
     },
     sendMensajeButton: {

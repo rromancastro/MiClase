@@ -8,7 +8,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 
-export default function EditAccountScreen() {
+export const EditarPerfil = () => {
 
     const navigation = useNavigation();
 

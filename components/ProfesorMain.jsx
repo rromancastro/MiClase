@@ -1,13 +1,18 @@
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useUser } from "../contexts/UserContext"
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { CardAula } from "./CardAula";
-import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Entypo from '@expo/vector-icons/Entypo';
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import getAulaById from "../firebase/getAulaByIds";
+import { CrearAula } from "./CrearAula";
+import { EditarPerfil } from "./EditarPerfil";
+import { Loader } from "./Loader";
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 export const ProfesorMain = () => {
 
@@ -15,7 +20,6 @@ export const ProfesorMain = () => {
 
     const {userData} = useUser();
     console.log(userData)
-
 
     //logica aulas
     const [userAulasIds, setUserAulasIds] = useState([])
@@ -37,31 +41,67 @@ export const ProfesorMain = () => {
     cargarAulas();
     }, [userAulasIds]);
 
-    return (<View style={styles.container}>
-        <Text style={styles.subTitle}>Tus aulas:</Text>
-        <View style={styles.aulasContainer}>
-            {aulas.map((aula) => (
-                <CardAula
-                    key={aula.id}
-                    nombre={aula.nombre}
-                    icono={aula.icono}
-                    color={aula.color}
-                    apellidoProfesor={aula.apellidoProfesor}
-                    id={aula.id}
-                />
-            ))}
-        </View>
+    //logica barra de tareas
+    const [section, setSection] = useState('clases');
+
+    const [colorIconClases, setColorIconClases] = useState('')
+    const [colorIconCrearAula, setColorIconCrearAula] = useState('')
+    const [colorIconEditarPerfil, setColorIconEditarPerfil] = useState('')
+
+    useEffect(() => {
+        setColorIconClases(section == 'clases' ? "#2979F8" : "#C0CBD9")
+        setColorIconCrearAula(section == 'crearAula' ? "#2979F8" : "#C0CBD9")
+        setColorIconEditarPerfil(section == 'editarPerfil' ? "#2979F8" : "#C0CBD9")
+    }, [section])
+
+    return (<>{aulas.length == 0 ? <Loader /> : <View style={styles.container}>
+        {
+            section == 'clases' ? 
+                <View style={styles.container}>
+                    <Text style={styles.titleMain}>{`¡Hola, ${userData.nombre}! 😁`}</Text>
+                    <Text style={styles.subTitle}>Tus aulas:</Text>
+                    <View style={styles.aulasContainer}>
+                        {aulas.map((aula) => (
+                            <CardAula
+                                key={aula.id}
+                                nombre={aula.nombre}
+                                icono={aula.icono}
+                                color={aula.color}
+                                apellidoProfesor={aula.apellidoProfesor}
+                                id={aula.id}
+                            />
+                        ))}
+                    </View>
+                </View> : 
+            section == 'crearAula' ? <CrearAula /> :
+            section == 'editarPerfil' ? <EditarPerfil /> : null
+        }
         <View style={styles.utilityes}>
-            <TouchableOpacity onPress={() => navigation.replace("CreateAulas")} style={styles.dropButton}><Text style={styles.dropText}>Crear aula</Text><Ionicons name="add" size={44} color="#fafafa" /></TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.replace("EditAccount")} style={styles.userButton}><FontAwesome6 name="user" size={35} color="white"/></TouchableOpacity>
+            <TouchableOpacity onPress={() => setSection('clases')} style={styles.utilityesButton}>
+                <Entypo style={styles.utilityesButtonIcon} name="home" size={34} color={colorIconClases} />
+                <Text style={{...styles.utilityesButtonText, color: colorIconClases}}>Mis aulas</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setSection('crearAula')} style={styles.utilityesButton}>
+                <MaterialIcons style={styles.utilityesButtonIcon} name="my-library-add" size={34} color={colorIconCrearAula} />
+                <Text style={{...styles.utilityesButtonText, color: colorIconCrearAula}}>Crear aula</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setSection('editarPerfil')} style={styles.utilityesButton}>
+                <FontAwesome5 style={styles.utilityesButtonIcon} name="user-alt" size={34} color={colorIconEditarPerfil} />
+                <Text style={{...styles.utilityesButtonText, color: colorIconEditarPerfil}}>Editar usuario</Text>
+            </TouchableOpacity>
         </View>
-    </View>)
+    </View>}</>)
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         gap: 10
+    },
+    titleMain: {
+        fontSize: 36,
+        fontFamily: 'Roboto',
+        fontWeight: '700'
     },
     subTitle: {
         fontSize: 26,
@@ -70,42 +110,29 @@ const styles = StyleSheet.create({
     },
     aulasContainer: {
         flex: 1,
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
+        gap: 10
     },
     utilityes: {
-        bottom: 30,
-        position: 'absolute',
-        width: screenWidth - 60
-    },
-    userButton: {
-        width: 70,
-        height: 70,
-        backgroundColor: '#45799D' ,
-        borderRadius: 35,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    dropButton: {
-        width: 170,
-        height: 70,
-        backgroundColor: '#45799D' ,
-        borderRadius: 35,
-        display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
+        gap: 10,
         alignItems: 'center',
-        position: 'absolute',
-        right: 0
+        height: screenHeight * .09,
+        borderTopColor: '#EFEEE7',
+        borderTopWidth: 1
     },
-    dropText: {
-        color: '#fafafa',
+    utilityesButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 130,
+        height: screenHeight * .09,
+    },
+    utilityesButtonIcon: {
+        width: 34,
+        height: 34
+    },
+    utilityesButtonText: {
         fontFamily: 'Roboto',
-        fontSize: 20,
-        fontWeight: 600,
-        marginLeft: 20,
+        fontSize: 16
     }
 })

@@ -2,13 +2,13 @@ import { Animated, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useRef, useState } from "react";
 import Fontisto from '@expo/vector-icons/Fontisto';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import generateCodeAula from "../helpers/generateCodeAula";
-import { addDoc, arrayUnion, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { arrayRemove, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useUser } from "../contexts/UserContext";
 import { useNavigation } from "@react-navigation/native";
@@ -16,8 +16,9 @@ import { useNavigation } from "@react-navigation/native";
 
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
-export default function CreateAulasScreen() {
+export const EditarAula = ({dataAula}) => {
 
     const navigation = useNavigation();
 
@@ -56,51 +57,70 @@ export default function CreateAulasScreen() {
     });
 
     //subir a firestore
-    const handleCrearAula = async () => {
+
+    const handleEditarAula = async () => {
         if (nombreAula.length > 0) {
             setNombreAulaError(false)
-            const codigo = await generateCodeAula();
 
             try {
-                const docRef = await addDoc(collection(db, "aulas"), {
-                    codigo: codigo,
-                    nombre: nombreAula,
-                    icono: icon,
-                    color: color,
-                    nombreProfesor: userData.nombre,
-                    apellidoProfesor: userData.apellido,
-                    emailProfesor: userData.email,
-                    estudiantes: [],
-                    createdAt: serverTimestamp(),
-                    profesores: [`${userData.nombre} ${userData.apellido}`],
-                });
-                console.log("Documento agregado con ID:", docRef.id);
-                await addDoc(collection(db, "aulas", docRef.id, "chat"), {
-                    senderName: 'MiClase',
-                    texto: `¡Bienvenido al chat del aula 😁! - "${nombreAula}"`,
-                    timestamp: serverTimestamp(),
-                    senderId: 0,
-                });
-                await updateDoc(doc(db, "users", userData.id), {
-                    aulas: arrayUnion(docRef.id)
-                });
-                setUserData({
-                    ...userData,
-                    aulas: [...userData.aulas, docRef.id]
-                })
-                navigation.replace("Main")
-            } catch (error) {
-                console.error("Error al agregar documento:", error);
-            }
+                    await updateDoc(doc(db, "aulas", dataAula.id), {
+                        nombre: nombreAula,
+                        icono: icon,
+                        color: color,
+                    });
+
+                    console.log("Aula actualizada con ID:", dataAula.id);
+                    navigation.replace("Aula", {aulaId: dataAula.id})
+                } catch (error) {
+                    console.error("Error al actualizar el aula:", error);
+                }
         } else {
-            setNombreAulaError(true)
+            setNombreAulaError(true);
         }
-        
-    }
+    };
+
+    const eliminarSubcoleccionChat = async (coleccionRef) => {
+        const snapshot = await getDocs(coleccionRef);
+        const batchDeleciones = [];
+
+        snapshot.forEach((documento) => {
+            batchDeleciones.push(deleteDoc(documento.ref));
+        });
+
+        await Promise.all(batchDeleciones);
+    };
+
+    const handleEliminarAula = async () => {
+        try {
+
+            eliminarSubcoleccionChat(doc(db, "aulas", dataAula.id, "chat"));
+
+            await deleteDoc(doc(db, "aulas", dataAula.id));
+            console.log("Aula eliminada con ID:", dataAula.id);
+
+            await updateDoc(doc(db, "users", userData.id), {
+                aulas: arrayRemove(dataAula.id)
+            });
+            
+            setUserData({
+                ...userData,
+                aulas: userData.aulas.filter(id => id !== dataAula.id)
+            })
+
+            navigation.replace("Main");
+        } catch (error) {
+            console.error("Error al eliminar el aula:", error);
+        }
+    };
+
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Crear aula</Text>
+            <View style={styles.nav}>
+                <TouchableOpacity onPress={() => navigation.replace("Aula", {aulaId: dataAula.id})}><AntDesign name="arrowleft" size={34} color='#363838' style={styles.navBack} /></TouchableOpacity>
+                <Text style={styles.navText}>Editar aula</Text>
+            </View>
+            <Text style={styles.title}>Editar aula</Text>
             <Animated.View style={[styles.card, { backgroundColor: bgColor }]}>
                 {
                     icon == 'calculator' ?  <Ionicons style={styles.cardIcon} name="calculator" size={180} color="#fafafa" /> :
@@ -118,7 +138,6 @@ export default function CreateAulasScreen() {
             {
                 nombreAulaError ? <Text style={{color: 'red', fontFamily: 'Roboto'}}>El aula debe tener un nombre</Text> : null
             }
-            <TouchableOpacity onPress={handleCrearAula} style={styles.crearButton}><Text style={styles.crearButtonText}>Crear aula</Text></TouchableOpacity>
             <View style={styles.colorAndIconContainer}>
                 <View style={styles.colorsContainer}>
                     <Text style={styles.colorsTitle}>Color</Text>
@@ -149,6 +168,8 @@ export default function CreateAulasScreen() {
                     </View>
                 </View>
             </View>
+            <TouchableOpacity onPress={handleEditarAula} style={styles.crearButton}><Text style={styles.crearButtonText}>Guardar cambios</Text></TouchableOpacity>
+            <TouchableOpacity onPress={handleEliminarAula} style={styles.eliminarButton}><Text style={styles.crearButtonText}>Eliminar aula</Text></TouchableOpacity>
         </View>
     )
 }
@@ -156,12 +177,30 @@ export default function CreateAulasScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
-        padding: 30,
+        paddingHorizontal: 30,
         gap: 20,
-        backgroundColor: '#fafafa'
+        backgroundColor: '#FBFBFB'
+    },
+    nav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: screenWidth * .1,
+        height: screenHeight * .08,
+        borderBottomColor: '#EFEEE7',
+        borderBottomWidth: 1,
+        width: screenWidth
+    },
+    navBack: {
+        height: 34,
+        width: 34,
+    },
+    navText: {
+        color: '#363838',
+        fontFamily: 'Roboto',
+        fontSize: 20,
+        fontWeight: 600,
+        marginLeft: 20
     },
     title: {
         fontSize: 36,
@@ -197,6 +236,15 @@ const styles = StyleSheet.create({
         width: screenWidth * 0.85,
         height: 60,
         backgroundColor: '#5090E6',
+        borderRadius: 20,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    eliminarButton: {
+        width: screenWidth * 0.85,
+        height: 60,
+        backgroundColor: '#e46666',
         borderRadius: 20,
         display: 'flex',
         justifyContent: 'center',
