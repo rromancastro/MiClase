@@ -69,7 +69,7 @@ export const IniciarJuego = ({aulaId}) => {
 
             </View> : 
 
-            section == 'verdaderoFalso' ? <VerdaderoFalso /> : null
+            section == 'verdaderoFalso' ? <VerdaderoFalso aulaId={aulaId}/> : null
 
             }
         </View>

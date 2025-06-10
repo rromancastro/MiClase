@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     borderRadius: 10,
     overflow: 'hidden',
-    marginTop: 60
+    marginTop: 20
   },
   barra: {
     height: 20,

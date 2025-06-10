@@ -4,11 +4,14 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get('window').width;
 
 
 export const MensajeComponent = ({ msjData, aulaId }) => {
+
+    const navigation = useNavigation();
 
     const [showEliminar, setShowEliminar] = useState(false)
 
@@ -38,7 +41,8 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
 
     return (
         <>
-            {msjId === userData.id ?
+            {msjData.tipo == 'mensaje' ?
+                msjId === userData.id ?
                 <TouchableOpacity onLongPress={() => setShowEliminar(!showEliminar)} style={styles.miMensaje}>
                     {showEliminar ? <TouchableOpacity onPress={handleEliminarMensaje}>
                         <AntDesign name="closecircle" size={20} color="#BD222C" style={{marginTop: 10}}/>
@@ -65,6 +69,21 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
                         <AntDesign name="closecircle" size={20} color="#BD222C" style={{marginTop: 20}}/>
                     </TouchableOpacity> : null}
                 </TouchableOpacity>
+
+            : msjData.tipo == 'juego' ?
+                <View style={styles.otroMensaje}>
+                    <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
+                        <Image source={msjData.avatarRequire} style={{width: 30, height: 30, borderRadius: 20,}}/>
+                    </View>
+                    <View>
+                        <Text style={styles.otroMensajeNombre}>MiClase</Text>
+                        <View style={styles.otroMensajeTexto}>
+                            <Text style={styles.otroMensajeTexto}>{msjData.texto}</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate("Juego", {juegoId: msjData.juegoId})}><Text style={styles.juegoMensajeUnirse}>Unirse al juego</Text></TouchableOpacity>
+                            <Text style={styles.otroMensajeTexto}>⌚¡Empieza ahora!</Text>
+                        </View>
+                    </View>
+                </View> : null
             }
         </>
     );
@@ -125,5 +144,14 @@ const styles = StyleSheet.create({
         color: '#A9A9A9',
         marginRight: 10,
         textAlign: 'right',
+    }, 
+    juegoMensajeUnirse: {
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        backgroundColor: '#35BF7E',
+        color: '#fafafa',
+        padding: 10,
+        borderRadius: 10,
+        textAlign: 'center',
     }
 })

@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useEffect, useState } from "react"
 import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { db } from "../firebase/firebaseConfig";
@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export const VerdaderoFalso = () => {
+export const VerdaderoFalso = ({aulaId}) => {
 
     const navigation = useNavigation();
 
@@ -47,9 +47,25 @@ export const VerdaderoFalso = () => {
                 activo: false,
                 resultados: [],
                 idProfesor: userData.id,
-                preguntaActual: 0
+                preguntaActual: 0,
+                datosParticipantes: [],
             });
+
             console.log("Documento escrito con ID: ", docRef.id);
+
+            //enviar invitacion a los alumnos
+            const aulaRef = collection(db, "aulas", aulaId, "chat");
+            await addDoc(aulaRef, {
+                senderName: `${userData.nombre} ${userData.apellido}`,
+                senderId: userData.id,
+                tipo: 'juego',
+                texto: `🎮¡El/La profesor/a ${userData.nombre} ha iniciado un juego de Verdadero o Falso!🧠`,
+                timestamp: serverTimestamp(),
+                juegoId: docRef.id,
+                avatarRequire: require('../assets/avatars/icon.png')
+            });
+
+
             navigation.navigate("Juego", {juegoId: docRef.id})
         } catch (e) {
             console.error("Error al añadir documento: ", e);
