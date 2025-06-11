@@ -117,13 +117,17 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
   const calcularPuntos = () => {
     if (!juegoData?.timestampInicioPregunta) return 0;
     const tiempoMs = Date.now() - juegoData.timestampInicioPregunta;
-    const segundos = tiempoMs / 100;
-    const puntos = Math.max(0, 960 - 9.6 * segundos);
+    const segundos = tiempoMs / 1000;
+    const puntos = Math.max(0, 960 - 96 * segundos);
+    console.log("Puntos:", puntos);
+    
     return Math.round(puntos);
   };
 
   // ✔️ Seleccionar respuesta
   const handleRespuesta = async (respuestaSeleccionada) => {
+    console.log("cooroeorosodaow");
+    
     setRespuesta(respuestaSeleccionada);
     setButtonDisableds(true);
 
@@ -184,8 +188,8 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
                         <Text style={styles.text}>Verdadero o falso</Text>
                         <BarraDeTiempo key={juegoData.preguntaActual} duracion={10} onTerminar={() => console.log('siguiente pregunta')} />
                         <Text style={styles.preguntaText}>{juegoData.preguntas[juegoData.preguntaActual - 1].pregunta}</Text>
-                        <TouchableOpacity disabled={buttonDisableds} onPress={() => handleRespuesta(true)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#30B38F', borderColor: borderColorVerdadero}}>{buttonDisableds ? juegoData?.preguntas?.[juegoData.preguntaActual - 1]?.respuesta === true ? <AntDesign name="checkcircle" size={24} color="#fafafa" style={{marginRight: 10}}/> : <Entypo name="circle-with-cross" size={24} color="#fafafa" style={{marginRight: 10}}/> : null}Verdadero</Text></TouchableOpacity>
-                        <TouchableOpacity disabled={buttonDisableds} onPress={() => handleRespuesta(false)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#F04A4F', borderColor: borderColorFalso}}>{buttonDisableds ? juegoData?.preguntas?.[juegoData.preguntaActual - 1]?.respuesta === false ? <AntDesign name="checkcircle" size={24} color="#fafafa" style={{marginRight: 10}}/> : <Entypo name="circle-with-cross" size={24} color="#fafafa" style={{marginRight: 10}}/> : null}Falso</Text></TouchableOpacity>
+                        <TouchableOpacity disabled={buttonDisableds}onPress={() => handleRespuesta(true)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#30B38F', borderColor: borderColorVerdadero}}>{buttonDisableds ? juegoData?.preguntas?.[juegoData.preguntaActual - 1]?.respuesta === true ? <AntDesign name="checkcircle" size={24} color="#fafafa" style={{marginRight: 10}}/> : <Entypo name="circle-with-cross" size={24} color="#fafafa" style={{marginRight: 10}}/> : null}Verdadero</Text></TouchableOpacity>
+                        <TouchableOpacity disabled={buttonDisableds}onPress={() => handleRespuesta(false)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#F04A4F', borderColor: borderColorFalso}}>{buttonDisableds ? juegoData?.preguntas?.[juegoData.preguntaActual - 1]?.respuesta === false ? <AntDesign name="checkcircle" size={24} color="#fafafa" style={{marginRight: 10}}/> : <Entypo name="circle-with-cross" size={24} color="#fafafa" style={{marginRight: 10}}/> : null}Falso</Text></TouchableOpacity>
                     </View>
 
                     <View>

@@ -1,6 +1,8 @@
 import { useFonts } from 'expo-font';
 import AppNavigator from './navigation/AppNavigator';
 import { UserProvider } from './contexts/UserContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -12,7 +14,13 @@ export default function App() {
   
   return (
     <UserProvider>
-      <AppNavigator />
+      <AuthProvider>
+        <SafeAreaProvider>
+          <SafeAreaView style={{ flex: 1}}>
+            <AppNavigator />
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </AuthProvider>
     </UserProvider>
   )
 }

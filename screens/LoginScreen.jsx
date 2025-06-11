@@ -12,8 +12,8 @@ export default function LoginScreen({ navigation }) {
       <Text style={styles.text}>Iniciar sesión</Text>
       <LoginComponent />
       <StatusBar style="dark" />
-      <Text style={{fontSize: '18px', fontFamily: 'Roboto', color: '#4e4e4e', marginTop: '30px'}}>¿No tienes cuenta?</Text>
-      <TouchableOpacity onPress={() => navigation.replace("CreateAccount")}><Text style={{fontSize: '18px', fontFamily: 'Roboto', color: '#4D8CE7', marginTop: '5px'}}>Crear cuenta</Text></TouchableOpacity>
+      <Text style={{fontSize: 18, fontFamily: 'Roboto', color: '#4e4e4e', marginTop: 30}}>¿No tienes cuenta?</Text>
+      <TouchableOpacity onPress={() => navigation.replace("CreateAccount")}><Text style={{fontSize: 18, fontFamily: 'Roboto', color: '#4D8CE7', marginTop: 5}}>Crear cuenta</Text></TouchableOpacity>
     </View>
   );
 }

@@ -1,10 +1,11 @@
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useUser } from "../contexts/UserContext";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
+import { SvgUri } from "react-native-svg";
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -14,6 +15,8 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
     const navigation = useNavigation();
 
     const [showEliminar, setShowEliminar] = useState(false)
+
+    const [loadingImage, setLoadingImage] = useState(true);
 
     const { userData } = useUser();
     
@@ -52,13 +55,20 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
                         <Text style={styles.miMensajeHora}>{horas}:{minutos}</Text>
                     </View>
                     <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
-                        <Image source={userData.avatarRequired} style={{width: 30, height: 30, borderRadius: 20,}}/>
+                        {
+                            loadingImage ? <ActivityIndicator size={"small"} color={'grey'} /> : null
+                        }
+                        <SvgUri onLoad={() => setLoadingImage(false)} width="50" height="50" uri={userData.avatarUrl} />
                     </View>
+
                 </TouchableOpacity>
                 :
                 <TouchableOpacity onLongPress={() => setShowEliminar(!showEliminar)} style={styles.otroMensaje}>
                     <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
-                        <Image source={msjData.avatarRequire} style={{width: 30, height: 30, borderRadius: 20,}}/>
+                        {
+                            loadingImage ? <ActivityIndicator size={"small"} color={'grey'} /> : null
+                        }
+                        <SvgUri onLoad={() => setLoadingImage(false)} width="50" height="50" uri={msjData.avatarUrl} />
                     </View>
                     <View>
                         <Text style={styles.otroMensajeNombre}>{msjData.senderName}</Text>

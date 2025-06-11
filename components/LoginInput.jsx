@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import emailExists from "../firebase/userExists";
@@ -6,8 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebaseConfig'; // Ajustá la ruta según tu estructura
 import { useUser } from '..//contexts/UserContext'; // Contexto que te expliqué antes
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function LoginComponent() {
+
+  const {handleSignIn} = useContext(AuthContext);
 
   const navigation = useNavigation();
 
@@ -27,7 +30,7 @@ export default function LoginComponent() {
         setDontEmailExistsValue(true)
     } else {
         try {
-      await signInWithEmailAndPassword(auth, email, password);
+      handleSignIn(email, password);
       setErrorCredentials(false);
       console.log("Login correcto");
 
@@ -115,12 +118,13 @@ const styles = StyleSheet.create({
     width: 320,
     fontFamily: 'Roboto',
     color: '#fafafa',
-    height: 50,
+    padding: 10,
     borderRadius: 20,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: '600',
+    textAlign: 'center', 
   }
 });

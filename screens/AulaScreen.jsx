@@ -5,6 +5,7 @@ import { useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
+import { StatusBar } from "expo-status-bar";
 
 export default function AulaScreen() {
         const {userData} = useUser();

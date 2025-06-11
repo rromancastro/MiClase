@@ -1,8 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useUser } from "../contexts/UserContext";
-import { TextInput } from "react-native-web";
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
@@ -117,26 +116,28 @@ const styles = StyleSheet.create({
         width: 320,
         fontFamily: 'Roboto',
         color: '#fafafa',
-        height: 50,
+        padding: 10,
         borderRadius: 20,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         fontSize: 20,
         fontWeight: '500',
-        marginTop: 20
+        marginTop: 20,
+        textAlign: 'center',
     },
     buttonCerrarSesion: {
         backgroundColor: '#e46666',
         width: 320,
         fontFamily: 'Roboto',
         color: '#fafafa',
-        height: 50,
+        padding: 10,
         borderRadius: 20,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         fontSize: 20,
         fontWeight: '500',
+        textAlign: 'center',
     }
 })

@@ -55,7 +55,7 @@ export const ChatComponent = ({aulaId}) => {
                 texto: textoLimpio,
                 timestamp: serverTimestamp(),
                 tipo: 'mensaje',
-                avatarRequire: userData.avatarRequired
+                avatarUrl: userData.avatarUrl
             });
         } catch (error) {
             console.error("Error al enviar el mensaje:", error);

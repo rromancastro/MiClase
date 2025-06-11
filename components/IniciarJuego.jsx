@@ -12,7 +12,7 @@ export const IniciarJuego = ({aulaId}) => {
 
     const navigation = useNavigation();
 
-    const [section, setSection] = useState('verdaderoFalso')
+    const [section, setSection] = useState('seleccionar')
     const [titulo, setTitulo] = useState('Seleccionar juego')
 
     useEffect(() => {
