@@ -16,7 +16,7 @@ export default function App() {
     <UserProvider>
       <AuthProvider>
         <SafeAreaProvider>
-          <SafeAreaView style={{ flex: 1}}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: '#FBFBFB'}}>
             <AppNavigator />
           </SafeAreaView>
         </SafeAreaProvider>

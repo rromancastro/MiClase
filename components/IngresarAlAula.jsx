@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useUser } from "../contexts/UserContext";
 import { arrayUnion, collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get('window').width;
@@ -60,7 +61,10 @@ export const IngresarAlAula = () => {
 
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              style={styles.container}>
+            <MaterialCommunityIcons name="google-classroom" size={124} color="#5090E6" />
             <Text style={styles.title}>Ingresar al aula</Text>
             <TextInput value={codigoAula} keyboardType="numeric" onChangeText={setCodigoAula} maxLength={6} placeholder="Código de aula (6 Caracteres)" placeholderTextColor={'grey'} style={styles.input} />
             {
@@ -68,7 +72,7 @@ export const IngresarAlAula = () => {
             }
             <TouchableOpacity onPress={handleIngresar} ><Text style={styles.crearButtonText}>Ingresar</Text></TouchableOpacity>
             
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 

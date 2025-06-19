@@ -59,6 +59,7 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
                             loadingImage ? <ActivityIndicator size={"small"} color={'grey'} /> : null
                         }
                         <SvgUri onLoad={() => setLoadingImage(false)} width="50" height="50" uri={userData.avatarUrl} />
+
                     </View>
 
                 </TouchableOpacity>

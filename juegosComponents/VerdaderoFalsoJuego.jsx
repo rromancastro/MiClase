@@ -9,6 +9,7 @@ import { BarraDeTiempo, Loader } from "../components";
 import { Dimensions } from "react-native";
 import { useUser } from "../contexts/UserContext";
 import { useNavigation } from "@react-navigation/native";
+import { SvgUri } from "react-native-svg";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -70,7 +71,7 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
       const participanteRef = doc(db, 'juegos', juegoId, 'participantes', userData.id);
       await setDoc(participanteRef, {
         nombre: userData.nombre,
-        avatarRequired: userData.avatarRequired,
+        avatarRequired: userData.avatarUrl,
         puntos: 0,
       });
       setShowUnirse(false);
@@ -115,14 +116,14 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
 
   // calcular puntos
   const calcularPuntos = () => {
-    if (!juegoData?.timestampInicioPregunta) return 0;
-    const tiempoMs = Date.now() - juegoData.timestampInicioPregunta;
-    const segundos = tiempoMs / 1000;
-    const puntos = Math.max(0, 960 - 96 * segundos);
-    console.log("Puntos:", puntos);
-    
-    return Math.round(puntos);
-  };
+  if (!juegoData?.timestampInicioPregunta) return 0;
+
+  const tiempoMs = Date.now() - juegoData.timestampInicioPregunta;
+  const segundos = tiempoMs / 1000; 
+  const puntos = Math.max(0, 960 - 36 * segundos);
+
+  return Math.round(puntos);
+};
 
   // ✔️ Seleccionar respuesta
   const handleRespuesta = async (respuestaSeleccionada) => {
@@ -166,7 +167,7 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
                     {
                         participantes.map((participante, index) => {
                             return <View key={index} style={styles.participanteContainer} >
-                                <Image source={participante.avatarRequired} style={{width: 50, height: 50}} />
+                                <SvgUri width="60" height="60" uri={participante.avatarRequired} />
                                 <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#fafafa', fontWeight: 700}}>{participante.nombre}</Text>
                             </View>
                         })
@@ -194,7 +195,7 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
 
                     <View>
                         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, marginVertical: 20}}>
-                            <Image source={userData.avatarRequired} style={{width: 40, height: 40}} />  
+                            <Image source={userData.avatarUrl} style={{width: 40, height: 40}} />  
                             <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#fafafa', fontWeight: 700}}>Mis puntos: {puntosTotales}</Text>
                         </View>
                         <View style={styles.topFive}>
@@ -202,7 +203,7 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
                             {
                                 topFive.map((participante, index) => {
                                     return <View key={index} style={{flexDirection: "row", gap: 10, alignItems: 'center'}} >
-                                        <Image source={participante.avatarRequired} style={{width: 40, height: 40}} />
+                                        <SvgUri width="50" height="50" uri={participante.avatarRequired} />
                                         <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#fafafa', fontWeight: 700}}>{participante.nombre} - {participantes[index].puntos}</Text>
                                     </View>
                                 })
@@ -228,7 +229,7 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
                                 index === 2 ? <FontAwesome5 name="medal" size={24} color="#CA844E" style={{backgroundColor: '#fafafa', padding: 10, borderRadius: 30}}/> :
                                 <Text style={{fontFamily: 'Roboto', fontSize: 22, color: '#fafafa', fontWeight: 700, width: 45, textAlign: 'center'}}>{index + 1}</Text> 
                               }
-                              <Image source={participante.avatarRequired} style={{width: 50, height: 50}} />
+                              <SvgUri width="50" height="50" uri={participante.avatarRequired} />
                               <Text style={{fontFamily: 'Roboto', fontSize: 22, color: '#fafafa', fontWeight: 700}}>{participante.nombre}</Text>
                               <Text style={{fontFamily: 'Roboto', fontSize: 22, color: '#fafafa', fontWeight: 700, position: 'absolute', right: 30}}>{participante.puntos}</Text>
                             </View>

@@ -1,4 +1,4 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -11,6 +11,8 @@ import { Picker } from "@react-native-picker/picker";
 import emailExists from "../firebase/userExists";
 import { AuthContext } from "../contexts/AuthContext";
 import { SvgUri } from 'react-native-svg';
+import { useNavigation } from "@react-navigation/native";
+import { Loader } from "../components/Loader";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -24,7 +26,11 @@ const buildAvatarUrl = (config) => {
 
 export default function CreateAccountScreen() {
 
+    const navigation = useNavigation();
+
     const {handleSignUp} = useContext(AuthContext);
+
+    const [loadingAvatar, setLoadingAvatar] = useState(true)
 
 
     const [nombre, setNombre] = useState("")
@@ -35,6 +41,8 @@ export default function CreateAccountScreen() {
 
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
+
+    const [section, setSection] = useState("data")
 
     const [rolValue, setRolValue] = useState("estudiante")
 
@@ -75,6 +83,10 @@ export default function CreateAccountScreen() {
         console.log(avatarUrl);
         
       };
+
+      //logica barra avatar
+      const [avatarSection, setAvatarSection] = useState("Piel");
+      const avatarOptions = ["Piel", "Peinado", "Ojos", "Boca", "Accesorios", "Vestimenta"]
 
     //errores
     const [emailDistinto, setEmailDistinto] = useState(false)
@@ -128,6 +140,7 @@ export default function CreateAccountScreen() {
                         setContrasenaInvalida(false)
                         handleSignUp(email, password)
                         agregarUsuario();
+                        navigation.replace("Login");
                     }
                 }
             }
@@ -137,73 +150,130 @@ export default function CreateAccountScreen() {
         
     }
 
-    return (
-        <ScrollView>
+    return (<ScrollView style={{flex: 1, backgroundColor: '#FBFBFB'}}>
 <View style={styles.container}>
-                <SvgUri width="200" height="200" uri={avatarUrl} marginTop={50}/>
+                {
+                    loadingAvatar ? <View style={{width: 200, height: 200, justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
+                        <Loader />
+                    </View> : null
+                }
+                <SvgUri onLoad={() => setLoadingAvatar(false)} width="200" height="200" uri={avatarUrl} marginTop={30}/>
                 
                 <Text style={styles.title}>Crea tu cuenta</Text>
-    
-                <Text style={styles.avatarConfig}>Color de piel</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5, justifyContent: 'center'}}>
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('skinColor', 'Pale')} uri={buildAvatarUrl({...avatarConfigStatic, skinColor: 'Pale'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('skinColor', 'Light')} uri={buildAvatarUrl({...avatarConfigStatic, skinColor: 'Light'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('skinColor', 'Brown')} uri={buildAvatarUrl({...avatarConfigStatic, skinColor: 'Brown'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('skinColor', 'DarkBrown')} uri={buildAvatarUrl({...avatarConfigStatic, skinColor: 'DarkBrown'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('skinColor', 'Black')} uri={buildAvatarUrl({...avatarConfigStatic, skinColor: 'Black'})} />
+                <View style={{flexDirection: 'row', gap: 10, marginBottom: 20}}>
+                    <TouchableOpacity onPress={() => setSection('data')}><Text style={{padding: 10, color: '#fafafa', borderRadius: 10, backgroundColor: section =='data' ? '#4D8CE7' : '#888A88' }}>Información</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => setSection('avatar')}><Text style={{padding: 10, color: '#fafafa', borderRadius: 10, backgroundColor: section =='avatar' ? '#4D8CE7' : '#888A88' }}>Avatar</Text></TouchableOpacity>
+                </View>
+                {section == 'avatar' ? <View >
+
+                    <View style={{height: 30}}>
+                        <FlatList
+                            data={avatarOptions}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor={(item, index) => index.toString()}
+                            contentContainerStyle={{ paddingLeft: screenWidth / 2.4 , paddingRight: screenWidth / 2.4 }}
+                            renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => setAvatarSection(item)}>
+                                <Text style={{marginHorizontal: 20, fontWeight: '700', fontSize: 16, fontFamily: 'Roboto', color: avatarSection === item ? '#4D8CE7' : '#888A88'}}>{item}</Text>
+                            </TouchableOpacity>
+                            )}
+                        />
+                    </View>
+
+                    {
+                    avatarSection === "Piel" ? 
+                    <View style={{flexDirection: 'row', marginTop: 20 ,gap: 20, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
+                        <TouchableOpacity onPress={() => updateTrait('skinColor', 'Pale')} style={{...styles.buttonPiel, backgroundColor: "#FFDBB4"}} />
+                        <TouchableOpacity onPress={() => updateTrait('skinColor', 'Light')} style={{...styles.buttonPiel, backgroundColor: "#EDB98A"}} />
+                        <TouchableOpacity onPress={() => updateTrait('skinColor', 'Brown')} style={{...styles.buttonPiel, backgroundColor: "#D08B5B"}} />
+                        <TouchableOpacity onPress={() => updateTrait('skinColor', 'DarkBrown')} style={{...styles.buttonPiel, backgroundColor: "#AE5D29"}} />
+                        <TouchableOpacity onPress={() => updateTrait('skinColor', 'Black')} style={{...styles.buttonPiel, backgroundColor: "#614335"}} />
+                        <TouchableOpacity onPress={() => updateTrait('skinColor', 'Tanned')} style={{...styles.buttonPiel, backgroundColor: "#FD9841"}} />
+                        <TouchableOpacity onPress={() => updateTrait('skinColor', 'Yellow')} style={{...styles.buttonPiel, backgroundColor: "#F8D25C"}} />
+                    </View> :
+                    
+                    avatarSection === "Peinado" ?<View>
+                    <View style={{flexDirection: 'row', gap: 20, paddingHorizontal: 20, justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: 'black'}}  onPress={() => updateTrait('hairColor', 'Black')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#5C4641'}}  onPress={() => updateTrait('hairColor', 'BrownDark')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#805447'}}  onPress={() => updateTrait('hairColor', 'Brown')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#DABB7E'}}  onPress={() => updateTrait('hairColor', 'BlondeGolden')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#CE471E'}}  onPress={() => updateTrait('hairColor', 'Red')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#EAE4E4'}}  onPress={() => updateTrait('hairColor', 'SilverGray')}/>
+                    </View>
+                    <View style={{flexDirection: 'row', marginTop: 20 ,gap: 20, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'NoHair')}><Image source={require('../assets/avatars/pelo1.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'WinterHat3')}><Image source={require('../assets/avatars/pelo2.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'Hat')}><Image source={require('../assets/avatars/pelo3.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'LongHairFro')}><Image source={require('../assets/avatars/pelo4.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'LongHairBob')}><Image source={require('../assets/avatars/pelo5.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'LongHairStraight')}><Image source={require('../assets/avatars/pelo6.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'ShortHairShortWaved')}><Image source={require('../assets/avatars/pelo7.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'ShortHairTheCaesar')}><Image source={require('../assets/avatars/pelo8.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('topType', 'ShortHairShortRound')}><Image source={require('../assets/avatars/pelo9.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                    </View> </View> : 
+
+                    avatarSection === "Ojos" ? 
+                    <View style={{flexDirection: 'row', marginTop: 20 ,gap: 20, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'Default')}><Image source={require('../assets/avatars/ojos1.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'EyeRoll')}><Image source={require('../assets/avatars/ojos2.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'Happy')}><Image source={require('../assets/avatars/ojos3.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'Hearts')}><Image source={require('../assets/avatars/ojos4.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'Side')}><Image source={require('../assets/avatars/ojos5.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'Squint')}><Image source={require('../assets/avatars/ojos6.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'Wink')}><Image source={require('../assets/avatars/ojos7.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'WinkWacky')}><Image source={require('../assets/avatars/ojos8.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('eyeType', 'Surprised')}><Image source={require('../assets/avatars/ojos9.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                    </View> :
+
+                    avatarSection === "Boca" ? 
+                    <View style={{flexDirection: 'row', marginTop: 20 ,gap: 20, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
+                        <TouchableOpacity onPress={() => updateTrait('mouthType', 'Default')}><Image source={require('../assets/avatars/boca1.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('mouthType', 'Eating')}><Image source={require('../assets/avatars/boca2.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('mouthType', 'Grimace')}><Image source={require('../assets/avatars/boca3.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('mouthType', 'Serious')}><Image source={require('../assets/avatars/boca4.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('mouthType', 'Smile')}><Image source={require('../assets/avatars/boca5.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('mouthType', 'Tongue')}><Image source={require('../assets/avatars/boca6.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('mouthType', 'Twinkle')}><Image source={require('../assets/avatars/boca7.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                    </View> : 
+
+                    avatarSection === "Accesorios" ? 
+                    <View style={{flexDirection: 'row', marginTop: 20 ,gap: 20, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
+                        <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Default')}><Image source={require('../assets/avatars/lentes1.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Kurt')}><Image source={require('../assets/avatars/lentes2.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Prescription01')}><Image source={require('../assets/avatars/lentes3.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Prescription02')}><Image source={require('../assets/avatars/lentes4.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Round')}><Image source={require('../assets/avatars/lentes5.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Sunglasses')}><Image source={require('../assets/avatars/lentes6.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Wayfarers')}><Image source={require('../assets/avatars/lentes7.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                    </View> : 
+
+                    
+                    avatarSection === "Vestimenta" ?<View>
+                    <View style={{flexDirection: 'row', gap: 20, paddingHorizontal: 20, justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#262E33'}}  onPress={() => updateTrait('clotheColor', 'Black')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#25557C'}}  onPress={() => updateTrait('clotheColor', 'Blue03')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#929598'}}  onPress={() => updateTrait('clotheColor', 'Gray02')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#A7FFC4'}}  onPress={() => updateTrait('clotheColor', 'PastelGreen')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#FF488E'}}  onPress={() => updateTrait('clotheColor', 'PinkRed')}/>
+                        <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#FF5C5C'}}  onPress={() => updateTrait('clotheColor', 'Red')}/>
+                    </View>
+                    <View style={{flexDirection: 'row', marginTop: 20 ,gap: 20, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
+                        <TouchableOpacity onPress={() => updateTrait('clotheType', 'BlazerShirt')}><Image source={require('../assets/avatars/ropa1.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('clotheType', 'BlazerSweater')}><Image source={require('../assets/avatars/ropa2.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('clotheType', 'CollarSweater')}><Image source={require('../assets/avatars/ropa3.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('clotheType', 'Hoodie')}><Image source={require('../assets/avatars/ropa5.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('clotheType', 'Overall')}><Image source={require('../assets/avatars/ropa6.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('clotheType', 'ShirtCrewNeck')}><Image source={require('../assets/avatars/ropa7.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                        <TouchableOpacity onPress={() => updateTrait('clotheType', 'ShirtVNeck')}><Image source={require('../assets/avatars/ropa9.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
+                    </View> </View> : null
+                
+                    }
+                
                 </View>
 
-                <Text style={styles.avatarConfig}>Tipo de pelo</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5, justifyContent: 'center'}}>
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('topType', 'WinterHat4')} uri={buildAvatarUrl({...avatarConfigStatic, topType: 'WinterHat4'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('topType', 'LongHairFro')} uri={buildAvatarUrl({...avatarConfigStatic, topType: 'LongHairFro'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('topType', 'LongHairStraight')} uri={buildAvatarUrl({...avatarConfigStatic, topType: 'LongHairStraight'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('topType', 'ShortHairShaggyMullet')} uri={buildAvatarUrl({...avatarConfigStatic, topType: 'ShortHairShaggyMullet'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('topType', 'ShortHairTheCaesar')} uri={buildAvatarUrl({...avatarConfigStatic, topType: 'ShortHairTheCaesar'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('topType', 'ShortHairShortWaved')} uri={buildAvatarUrl({...avatarConfigStatic, topType: 'ShortHairShortWaved'})} />
-                </View>
-
-                <Text style={styles.avatarConfig}>Accesorio</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5, justifyContent: 'center'}}>
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('accessoriesType', 'Blank')} uri={buildAvatarUrl({...avatarConfigStatic, accessoriesType: 'Blank'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('accessoriesType', 'Round')} uri={buildAvatarUrl({...avatarConfigStatic, accessoriesType: 'Round'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('accessoriesType', 'Sunglasses')} uri={buildAvatarUrl({...avatarConfigStatic, accessoriesType: 'Sunglasses'})} />
-                </View>
-
-                <Text style={styles.avatarConfig}>Color de pelo</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5, justifyContent: 'center'}}>
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('hairColor', 'Brown')} uri={buildAvatarUrl({...avatarConfigStatic, hairColor: 'Brown', topType: 'ShortHairShortWaved'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('hairColor', 'BlondeGolden')} uri={buildAvatarUrl({...avatarConfigStatic, hairColor: 'BlondeGolden', topType: 'ShortHairShortWaved'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('hairColor', 'Black')} uri={buildAvatarUrl({...avatarConfigStatic, hairColor: 'Black', topType: 'ShortHairShortWaved'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('hairColor', 'BrownDark')} uri={buildAvatarUrl({...avatarConfigStatic, hairColor: 'BrownDark', topType: 'ShortHairShortWaved'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('hairColor', 'Red')} uri={buildAvatarUrl({...avatarConfigStatic, hairColor: 'Red', topType: 'ShortHairShortWaved'})} />
-                </View>
-
-                <Text style={styles.avatarConfig}>Bello facial</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5, justifyContent: 'center'}}>
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('facialHairType', 'Blank')} uri={buildAvatarUrl({...avatarConfigStatic, facialHairType: 'Blank'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('facialHairType', 'BeardLight')} uri={buildAvatarUrl({...avatarConfigStatic, facialHairType: 'BeardLight'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('facialHairType', 'MoustacheFancy')} uri={buildAvatarUrl({...avatarConfigStatic, facialHairType: 'MoustacheFancy'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('facialHairType', 'MoustacheMagnum')} uri={buildAvatarUrl({...avatarConfigStatic, facialHairType: 'MoustacheMagnum'})} />
-                </View>
-
-                <Text style={styles.avatarConfig}>Ropa</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5, justifyContent: 'center'}}>
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheType', 'BlazerSweater')} uri={buildAvatarUrl({...avatarConfigStatic, clotheType: 'BlazerSweater'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheType', 'ShirtCrewNeck')} uri={buildAvatarUrl({...avatarConfigStatic, clotheType: 'ShirtCrewNeck'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheType', 'Hoodie')} uri={buildAvatarUrl({...avatarConfigStatic, clotheType: 'Hoodie'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheType', 'CollarSweater')} uri={buildAvatarUrl({...avatarConfigStatic, clotheType: 'CollarSweater'})} />
-                </View>
-
-                <Text style={styles.avatarConfig}>Color de ropa</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5, justifyContent: 'center'}}>
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheColor', 'Black')} uri={buildAvatarUrl({...avatarConfigStatic, clotheColor: 'Black'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheColor', 'Blue03')} uri={buildAvatarUrl({...avatarConfigStatic, clotheColor: 'Blue03'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheColor', 'Grey02')} uri={buildAvatarUrl({...avatarConfigStatic, clotheType: 'Grey02'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheColor', 'Red')} uri={buildAvatarUrl({...avatarConfigStatic, clotheColor: 'Red'})} />
-                    <SvgUri width={screenWidth * .14} height={screenWidth * .14} onPress={() => updateTrait('clotheColor', 'PastelGreen')} uri={buildAvatarUrl({...avatarConfigStatic, clotheColor: 'PastelGreen'})} />
-                </View>
-
+                : <View>
 
                 <View style={styles.inputContainer}>
                     <FontAwesome5 name="user-alt" size={24} color="#7E848F" />
@@ -272,10 +342,10 @@ export default function CreateAccountScreen() {
                 </View>
     
                 {
-                    emailDistinto == true ? <Text style={styles.errorText}t>Los correos no coinciden</Text> : null
+                    emailDistinto == true ? <Text style={styles.errorText}>Los correos no coinciden</Text> : null
                 }
                 {
-                    emailExiste == true ? <Text style={styles.errorText}t>Este correo ya está registrado</Text> : null
+                    emailExiste == true ? <Text style={styles.errorText}>Este correo ya está registrado</Text> : null
                 }
                 {
                     emailInvalido == true ? <Text style={styles.errorText}>El correo es invalido</Text> : null
@@ -286,11 +356,12 @@ export default function CreateAccountScreen() {
                 {
                     contrasenaInvalida == true ? <Text style={styles.errorText}>La contraseña debe tener al menos 8 caracteres</Text> : null
                 }
+                <TouchableOpacity onPress={handleCreateUser}><Text style={{...styles.buttonAcceder, marginVertical: 20, alignSelf: 'center'}}>Crear cuenta</Text></TouchableOpacity>
+                
+                </View>}
     
-                <TouchableOpacity onPress={handleCreateUser}><Text style={{...styles.buttonAcceder, marginTop: 20}}>Crear cuenta</Text></TouchableOpacity>
 </View>
-        </ScrollView>
-    )
+    </ScrollView>)
 }
 
 const styles = StyleSheet.create({
@@ -298,8 +369,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FBFBFB',
     alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: screenHeight
   },
   title: {
     fontWeight: '700',
@@ -313,6 +382,20 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#7E848F',
     fontFamily: 'Roboto',
+  },
+  buttonPiel: {
+    width: screenWidth * .26,
+    height: screenWidth * .26,
+    borderRadius: (screenWidth * .20) / 2,
+  },
+  avatarConfigButton: {
+    width: screenWidth * .26,
+    height: screenWidth * .26,
+  },
+  buttonColor: {
+    width: screenWidth * .1,
+    height: screenWidth * .1,
+    borderRadius: (screenWidth * .1) / 2,
   },
   inputContainer:{
     backgroundColor: '#FFFFFF',
@@ -335,15 +418,16 @@ const styles = StyleSheet.create({
   buttonAcceder: {
     backgroundColor: '#4D8CE7',
     width: 320,
+    paddingVertical: 10,
     fontFamily: 'Roboto',
     color: '#fafafa',
-    height: 50,
     borderRadius: 20,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 20,
     fontWeight: '500',
+    textAlign: 'center',
   },
   rolContainer: {
     backgroundColor: '#FFFFFF',
@@ -371,11 +455,13 @@ const styles = StyleSheet.create({
     fontSize: 19,
     outlineStyle: 'none',
     color: 'grey',
+    width: 250,
+    height: 50,
   },
   errorText: {
     fontSize: 19,
     fontFamily: 'Roboto',
     color: 'red',
-    padding: 10
+    padding: 10,
   }
 });
