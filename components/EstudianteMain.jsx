@@ -23,6 +23,12 @@ export const EstudianteMain = () => {
     const {userData} = useUser();
     console.log(userData)
 
+     //logica hora bienvenida
+    const date = new Date();
+    const hora = date.getHours();
+    console.log(hora);
+    
+
     //logica aulas
     const [userAulasIds, setUserAulasIds] = useState([])
     const [loading, setLoading] = useState(true)
@@ -63,7 +69,12 @@ export const EstudianteMain = () => {
         {
             section == 'clases' ? 
                 <View style={styles.container}>
-                    <Text style={styles.titleMain}>{`¡Hola, ${userData.nombre}! 😁`}</Text>
+                     <Text style={styles.titleMainBienvenida}>{
+                            hora < 12 ? 'Buenos días,' :
+                            hora < 18 ? 'Buenas tardes,' : 
+                            hora < 21 ? 'Buenas noches, ' : null
+                         }</Text>
+                    <Text style={styles.titleMain}>{`${userData.nombre}! 😁`}</Text>
                     <Text style={styles.subTitle}>Tus aulas:</Text>
                     <View style={styles.aulasContainer}>
                         {aulas.map((aula) => (
@@ -74,6 +85,7 @@ export const EstudianteMain = () => {
                                 color={aula.color}
                                 apellidoProfesor={aula.apellidoProfesor}
                                 id={aula.id}
+                                avatar={aula.profesorAvatarUrl}
                             />
                         ))}
                     </View>
@@ -84,7 +96,7 @@ export const EstudianteMain = () => {
         <View style={styles.utilityes}>
             <TouchableOpacity onPress={() => setSection('clases')} style={styles.utilityesButton}>
                 <Entypo style={styles.utilityesButtonIcon} name="home" size={34} color={colorIconClases} />
-                <Text style={{...styles.utilityesButtonText, color: colorIconClases}}>Mis aulas</Text>
+                <Text style={{...styles.utilityesButtonText, color: colorIconClases}}>Inicio</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setSection('ingresarAula')} style={styles.utilityesButton}>
                 <MaterialCommunityIcons style={styles.utilityesButtonIcon} name="google-classroom" size={34} color={colorIconCrearAula} />
@@ -103,10 +115,18 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 10
     },
-    titleMain: {
-        fontSize: 36,
+    titleMainBienvenida: {
+        fontSize: 17,
         fontFamily: 'Roboto',
-        fontWeight: '700'
+        fontWeight: '500',
+        color: '#B3B3BD',
+        position: 'absolute',
+    },
+    titleMain: {
+        fontSize: 39,
+        fontFamily: 'Roboto',
+        fontWeight: '700',
+        marginTop: 20
     },
     subTitle: {
         fontSize: 26,
@@ -115,7 +135,9 @@ const styles = StyleSheet.create({
     },
     aulasContainer: {
         flex: 1,
-        gap: 10
+        gap: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
     },
     utilityes: {
         flexDirection: 'row',

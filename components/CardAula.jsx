@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity} from "react-native"
+import { ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native"
 import { useNavigation } from "@react-navigation/native";
 
 import Entypo from '@expo/vector-icons/Entypo';
@@ -8,18 +8,24 @@ import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Fontisto from '@expo/vector-icons/Fontisto';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Svg, { Path, SvgUri } from "react-native-svg";
+import { useState } from "react";
+import { Loader } from "./Loader";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 
-export const CardAula = ({color, icono, nombre, apellidoProfesor, id}) => {
+export const CardAula = ({color, icono, nombre, apellidoProfesor, id, avatar}) => {
 
     const navigation = useNavigation();
 
     const handlePress = () => {
         navigation.navigate("Aula", {aulaId: id})
     }
+
+    const [loadingImage, setLoadingImage] = useState(true);
 
     return (
         <TouchableOpacity onPress={handlePress} style={{...styles.container, backgroundColor: color}}>
@@ -35,36 +41,75 @@ export const CardAula = ({color, icono, nombre, apellidoProfesor, id}) => {
                     icono == 'sports-handball' ? <MaterialIcons style={styles.cardIcon} name="sports-handball" size={30} color="#fafafa" /> : null
             }
             <Text style={styles.nombre}>{nombre}</Text>
-            <Text style={styles.apellidoProfesor}>{`Prof. ${apellidoProfesor}`}</Text>
+            <View style={styles.dataProfesor}>
+                <View width={40} height={40} justifyContent={'center'} alignItems={'center'}>
+                    {
+                        loadingImage ? <ActivityIndicator size={"small"} color={'grey'} /> : null
+                    }
+                    <SvgUri onLoad={() => setLoadingImage(false)} uri={avatar} width={40} height={40} />
+                </View>
+                <Text style={styles.apellidoProfesor}>{`Prof. ${apellidoProfesor}`}</Text>
+            </View>
+            <Svg width={90} height={90} style={styles.curva} viewBox=" -30 -80 60 100" >
+            <Path
+                d="M 0 12 L -0 -72 C -10 -56 -18 -55 -24 -43 C -28 -30 -28 -30 -24 -18 C -18 -6 -10 -6 0 12"
+                
+                fill="#FBFBFB"
+            />
+            </Svg>
+            <AntDesign name="arrowup" size={20} color={color} style={styles.row} />
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: screenWidth * 0.85,
-        height: screenHeight * 0.08,
-        borderRadius: 10,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        width: screenWidth * 0.44,
+        height: screenHeight * 0.28,
+        borderRadius: 25,
         gap: 10
     },
     cardIcon: {
-        width: 30,
-        height: 30,
-        marginLeft: 20
+        width: 50,
+        height: 50,
+        borderRadius: 15,
+        marginLeft: 10,
+        marginTop: 10,
+        backgroundColor:"rgba(250, 250, 250, 0.64)",
+        padding: 10
     },
     nombre: {
         color: '#fafafa',
-        fontSize: 20,
+        fontSize: 26,
         fontFamily: 'Roboto',
-        fontWeight: '500',
+        fontWeight: '700',
+        marginLeft: 10,
+        position: 'absolute',
+        bottom: 60,
+    },
+    dataProfesor: {
+        position: 'absolute',
+        flexDirection: 'row',
+        alignItems: 'center',
+        bottom: 11,
+        left: 8,
+        gap: 4,
     },
     apellidoProfesor: {
         color: '#fafafa',
         fontSize: 16,
         fontFamily: 'Roboto',
-        fontWeight: '500'
+        fontWeight: '500',
+    },
+    curva: {
+        position: 'absolute',
+        right: -28,
+        bottom: 80,
+    },
+    row: {
+        position: 'absolute',
+        right: -3,
+        bottom: 113,
+        transform: [{ rotate: '30deg' }],
     }
 })
