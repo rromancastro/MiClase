@@ -5,11 +5,12 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { db } from "../firebase/firebaseConfig";
 import { useEffect, useRef, useState } from "react";
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { BarraDeTiempo, Loader } from "../components";
+import { BarraDeTiempo, CachedSvg, Loader } from "../components";
 import { Dimensions } from "react-native";
 import { useUser } from "../contexts/UserContext";
 import { useNavigation } from "@react-navigation/native";
 import { SvgUri } from "react-native-svg";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -153,7 +154,7 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
     }
   };
 
-    return (<View style={styles.container}>
+    return (<SafeAreaView style={styles.container}>
         {
             loading ? <Loader /> :
 
@@ -192,22 +193,40 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
                         <TouchableOpacity disabled={buttonDisableds}onPress={() => handleRespuesta(true)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#30B38F', borderColor: borderColorVerdadero}}>{buttonDisableds ? juegoData?.preguntas?.[juegoData.preguntaActual - 1]?.respuesta === true ? <AntDesign name="checkcircle" size={24} color="#fafafa" style={{marginRight: 10}}/> : <Entypo name="circle-with-cross" size={24} color="#fafafa" style={{marginRight: 10}}/> : null}Verdadero</Text></TouchableOpacity>
                         <TouchableOpacity disabled={buttonDisableds}onPress={() => handleRespuesta(false)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#F04A4F', borderColor: borderColorFalso}}>{buttonDisableds ? juegoData?.preguntas?.[juegoData.preguntaActual - 1]?.respuesta === false ? <AntDesign name="checkcircle" size={24} color="#fafafa" style={{marginRight: 10}}/> : <Entypo name="circle-with-cross" size={24} color="#fafafa" style={{marginRight: 10}}/> : null}Falso</Text></TouchableOpacity>
                     </View>
-
+                    
                     <View>
                         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, marginVertical: 20}}>
-                            <Image source={userData.avatarUrl} style={{width: 40, height: 40}} />  
+                            <SvgUri width="50" height="50" uri={userData.avatarUrl} />
                             <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#fafafa', fontWeight: 700}}>Mis puntos: {puntosTotales}</Text>
                         </View>
-                        <View style={styles.topFive}>
-                            <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#fafafa', fontWeight: 700}}>Top 5:</Text>
-                            {
-                                topFive.map((participante, index) => {
-                                    return <View key={index} style={{flexDirection: "row", gap: 10, alignItems: 'center'}} >
-                                        <SvgUri width="50" height="50" uri={participante.avatarRequired} />
-                                        <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#fafafa', fontWeight: 700}}>{participante.nombre} - {participantes[index].puntos}</Text>
-                                    </View>
-                                })
-                            }
+                        <View style={styles.topTresContainer}>
+                            {topFive[1] ? <View style={{alignItems: 'center',}}>
+                                <SvgUri width="50" height="50" uri={topFive[1].avatarRequired} />
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 5,fontSize: 18, color: '#fafafa', fontWeight: 700}}>{topFive[1].nombre}</Text>
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#DD750C', borderRadius: 7, padding: 7}}>{topFive[1].puntos} Puntos</Text>
+                                <View style={{backgroundColor:'rgb(233, 126, 20)', height: 20, width: screenWidth * .26, borderTopLeftRadius: 20}} />
+                                <View style={{backgroundColor:'#DD750C', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
+                                  <Text style={{fontSize: 80, fontFamily: 'Roboto', fontWeight: 700, color: '#fafafa', marginBottom: 10}}>2</Text>
+                                </View>
+                            </View> : null}
+                            <View style={{alignItems: 'center',}}>
+                                <SvgUri width="50" height="50" uri={topFive[0].avatarRequired} />
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 5,fontSize: 18, color: '#fafafa', fontWeight: 700}}>{topFive[0].nombre}</Text>
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#DD750C', borderRadius: 7, padding: 7}}>{topFive[0].puntos} Puntos</Text>
+                                <View style={{backgroundColor:'rgb(233, 126, 20)', height: 20, width: screenWidth * .26, borderTopLeftRadius: 20, borderTopRightRadius: 20}} />
+                                <View style={{backgroundColor:'#DD750C', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
+                                  <Text style={{fontSize: 90, fontFamily: 'Roboto', fontWeight: 700, color: '#fafafa', marginBottom: 20}}>1</Text>
+                                </View>
+                            </View>
+                            {topFive[2] ? <View style={{alignItems: 'center',}}>
+                                <SvgUri width="50" height="50" uri={topFive[2].avatarRequired} />
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 5,fontSize: 18, color: '#fafafa', fontWeight: 700}}>{topFive[2].nombre}</Text>
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#DD750C', borderRadius: 7, padding: 7}}>{topFive[2].puntos} Puntos</Text>
+                                <View style={{backgroundColor:'rgb(233, 126, 20)', height: 20, width: screenWidth * .26, borderTopRightRadius: 20}} />
+                                <View style={{backgroundColor:'#DD750C', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
+                                  <Text style={{fontSize: 70, fontFamily: 'Roboto', fontWeight: 700, color: '#fafafa'}}>3</Text>
+                                </View>
+                            </View> : null}
                         </View>
                     </View>
 
@@ -216,7 +235,7 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
                     //juego terminado
 
                     <View style={styles.container}>
-                      <Image source={userData.avatarRequired} style={{width: 100, height: 100, marginBottom: 20}} />
+                      <CachedSvg uri={userData.avatarUrl} width={180} height={110} marginBottom={20} />
                       <Text style={{fontFamily: 'Roboto', fontSize: 24, color: '#fafafa', fontWeight: 700}}>¡Felicidades, {userData.nombre}!</Text>
                       <Text style={{fontFamily: 'Roboto', fontSize: 24, color: '#fafafa', fontWeight: 700, marginBottom: 20}}>¡Has ganado {puntosTotales} puntos!</Text>
                       <Text style={{fontFamily: 'Roboto', marginBottom: 10 , fontSize: 24, color: '#fafafa', fontWeight: 700, backgroundColor: '#DD750C', padding: 10, borderRadius: 20, width: screenWidth * .4, textAlign: 'center'}}>Top 5:</Text>
@@ -224,24 +243,23 @@ export const VerdaderoFalsoJuego = ({juegoId}) => {
                           topFive.map((participante, index) => {
                             return <View key={index} style={{flexDirection: "row", marginBottom: 10 , gap: 10, alignItems: 'center',backgroundColor: '#DD750C', padding: 15, borderRadius: 20, width: screenWidth * .8}} > 
                               {
-                                index === 0 ? <FontAwesome5 name="medal" size={24} color="#F9C932" style={{backgroundColor: '#fafafa', padding: 10, borderRadius: 30}}/> :
-                                index === 1 ? <FontAwesome5 name="medal" size={24} color="#E0E5EB" style={{backgroundColor: '#fafafa', padding: 10, borderRadius: 30}}/> :
-                                index === 2 ? <FontAwesome5 name="medal" size={24} color="#CA844E" style={{backgroundColor: '#fafafa', padding: 10, borderRadius: 30}}/> :
+                                index === 0 ? <FontAwesome5 name="medal" size={24} color="#F9C932" style={{backgroundColor: 'rgb(255, 255, 255)', padding: 10, borderRadius: 30}}/> :
+                                index === 1 ? <FontAwesome5 name="medal" size={24} color="#E0E5EB" style={{backgroundColor: 'rgb(255, 255, 255)', padding: 10, borderRadius: 30}}/> :
+                                index === 2 ? <FontAwesome5 name="medal" size={24} color="#CA844E" style={{backgroundColor: 'rgb(255, 255, 255)', padding: 10, borderRadius: 30}}/> :
                                 <Text style={{fontFamily: 'Roboto', fontSize: 22, color: '#fafafa', fontWeight: 700, width: 45, textAlign: 'center'}}>{index + 1}</Text> 
                               }
-                              <SvgUri width="50" height="50" uri={participante.avatarRequired} />
+                              <CachedSvg width="50" height="50" uri={participante.avatarRequired} />
                               <Text style={{fontFamily: 'Roboto', fontSize: 22, color: '#fafafa', fontWeight: 700}}>{participante.nombre}</Text>
                               <Text style={{fontFamily: 'Roboto', fontSize: 22, color: '#fafafa', fontWeight: 700, position: 'absolute', right: 30}}>{participante.puntos}</Text>
                             </View>
                           })
                         }
-                      <TouchableOpacity onPress={() => navigation.goBack}><Text style={{fontFamily: 'Roboto', fontSize: 22, color: '#fafafa', fontWeight: 700, padding: 10, backgroundColor: '#3681D1', borderRadius: 20,marginTop: 20}}>Volver al aula</Text></TouchableOpacity>
                     </View>
 
                 }
             </View>
         }
-    </View>)
+    </SafeAreaView>)
 }
 
 const styles = StyleSheet.create({
@@ -310,7 +328,7 @@ const styles = StyleSheet.create({
         color: '#fafafa',
         fontSize: 24,
         fontWeight: '600',
-        marginTop: 20,
+        marginTop: 10,
         borderRadius: 20,
         borderWidth: 8,
         flexDirection: 'row',
@@ -320,5 +338,10 @@ const styles = StyleSheet.create({
     topFive: {
         gap: 10,
         width: screenWidth * 0.6,
-    }
+    },
+    topTresContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
 })

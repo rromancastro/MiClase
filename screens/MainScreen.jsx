@@ -1,17 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useUser } from "../contexts/UserContext";
 import { EstudianteMain, ProfesorMain } from "../components";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function MainScreen(){
 
     const { userData } = useUser();
     
     return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {
                 userData.rol == "profesor" ? <ProfesorMain /> : <EstudianteMain />
             }
-        </View>
+        </SafeAreaView>
     )
 }
 

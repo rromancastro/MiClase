@@ -12,6 +12,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Svg, { Path, SvgUri } from "react-native-svg";
 import { useState } from "react";
 import { Loader } from "./Loader";
+import { CachedSvg } from "./CachedSvg";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -43,10 +44,7 @@ export const CardAula = ({color, icono, nombre, apellidoProfesor, id, avatar}) =
             <Text style={styles.nombre}>{nombre}</Text>
             <View style={styles.dataProfesor}>
                 <View width={40} height={40} justifyContent={'center'} alignItems={'center'}>
-                    {
-                        loadingImage ? <ActivityIndicator size={"small"} color={'grey'} /> : null
-                    }
-                    <SvgUri onLoad={() => setLoadingImage(false)} uri={avatar} width={40} height={40} />
+                    <CachedSvg uri={avatar} width="40" height="40" />
                 </View>
                 <Text style={styles.apellidoProfesor}>{`Prof. ${apellidoProfesor}`}</Text>
             </View>
@@ -64,7 +62,7 @@ export const CardAula = ({color, icono, nombre, apellidoProfesor, id, avatar}) =
 
 const styles = StyleSheet.create({
     container: {
-        width: screenWidth * 0.44,
+        width: screenWidth * 0.43,
         height: screenHeight * 0.28,
         borderRadius: 25,
         gap: 10
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         bottom: 11,
         left: 8,
-        gap: 4,
+        gap: 5,
     },
     apellidoProfesor: {
         color: '#fafafa',

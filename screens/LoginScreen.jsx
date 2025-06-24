@@ -2,21 +2,24 @@ import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import LoginComponent from '../components/LoginInput';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function LoginScreen({ navigation }) {
   
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <FontAwesome6 name="user" size={60} color="white" style={styles.userIcon}/>
-      <Text style={styles.text}>Iniciar sesión</Text>
-      <LoginComponent />
-      <StatusBar style="dark" />
-      <Text style={{fontSize: 18, fontFamily: 'Roboto', color: '#4e4e4e', marginTop: 30}}>¿No tienes cuenta?</Text>
-      <TouchableOpacity onPress={() => navigation.replace("CreateAccount")}><Text style={{fontSize: 18, fontFamily: 'Roboto', color: '#4D8CE7', marginTop: 5}}>Crear cuenta</Text></TouchableOpacity>
-    </KeyboardAvoidingView>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <FontAwesome6 name="user" size={60} color="white" style={styles.userIcon}/>
+        <Text style={styles.text}>Iniciar sesión</Text>
+        <LoginComponent />
+        <StatusBar style="dark" />
+        <Text style={{fontSize: 18, fontFamily: 'Roboto', color: '#4e4e4e', marginTop: 30}}>¿No tienes cuenta?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("CreateAccount")}><Text style={{fontSize: 18, fontFamily: 'Roboto', color: '#4D8CE7', marginTop: 5}}>Crear cuenta</Text></TouchableOpacity>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

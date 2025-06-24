@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: 'flex',
-        gap: 20,
+        gap: 10,
         alignItems: 'center',
     },
     title: {
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     juegosImage: {
         width: 150,
         height: 140,
+        objectFit: 'contain',
     },
     juegosText: {
         fontFamily: 'Roboto',

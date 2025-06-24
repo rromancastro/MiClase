@@ -68,7 +68,7 @@ export const AulaComponent = ({dataAula}) => {
             </View> :
             section == 'chat' ? <ChatComponent aulaId={aulaId} /> :
             section == 'users' ? <UsersAula dataAula={dataAula}/> :
-            section == 'calendario' ? <Calendario /> : 
+            section == 'calendario' ? <Calendario dataAula={dataAula} /> : 
             section == 'editarAula' ? <EditarAula dataAula={dataAula}/> : 
             section == 'iniciarJuego' ? <IniciarJuego  aulaId={aulaId}/> : null
         }

@@ -21,12 +21,10 @@ export const EstudianteMain = () => {
     const navigation = useNavigation();
 
     const {userData} = useUser();
-    console.log(userData)
 
      //logica hora bienvenida
     const date = new Date();
     const hora = date.getHours();
-    console.log(hora);
     
 
     //logica aulas
@@ -47,10 +45,16 @@ export const EstudianteMain = () => {
         const resultados = await Promise.all(promesas);
         setAulas(resultados);
         setLoading(false);
+        setFechas(resultados.map(aula => aula.fechas).flat());
     };
 
     cargarAulas();
     }, [userAulasIds]);
+
+    //logica fechas 
+    const [fechas, setFechas] = useState([]);
+    console.log(fechas);
+    
 
     //logica barra de tareas
     const [section, setSection] = useState('clases');
@@ -137,7 +141,6 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 10,
         flexDirection: 'row',
-        justifyContent: 'center',
     },
     utilityes: {
         flexDirection: 'row',

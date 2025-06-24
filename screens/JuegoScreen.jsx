@@ -8,9 +8,8 @@ import { Audio } from "expo-av";
 
 export default function JuegoScreen() {
 
-    // const route = useRoute();
-    // const {juegoId} = route.params;
-    const juegoId = 'wBfM0Djljk5rjuYYowJM';
+    const route = useRoute();
+    const {juegoId} = route.params;
 
     const [juegoData, setJuegoData] = useState(null);
     const [loading, setLoading] = useState(true);

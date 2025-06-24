@@ -3,6 +3,7 @@ import AppNavigator from './navigation/AppNavigator';
 import { UserProvider } from './contexts/UserContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -16,9 +17,8 @@ export default function App() {
     <UserProvider>
       <AuthProvider>
         <SafeAreaProvider>
-          <SafeAreaView style={{ flex: 1, backgroundColor: '#FBFBFB'}}>
             <AppNavigator />
-          </SafeAreaView>
+            <Toast />
         </SafeAreaProvider>
       </AuthProvider>
     </UserProvider>

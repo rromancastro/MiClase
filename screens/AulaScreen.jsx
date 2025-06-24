@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AulaScreen() {
         const {userData} = useUser();
@@ -60,8 +61,8 @@ export default function AulaScreen() {
 //     }
 
     return (
-        <View style={{backgroundColor: '#FBFBFB', flex: 1}}>
+        <SafeAreaView style={{backgroundColor: '#FBFBFB', flex: 1}}>
             <AulaComponent dataAula={aula} />
-        </View>
+        </SafeAreaView>
     )
 }

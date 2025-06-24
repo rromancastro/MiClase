@@ -74,6 +74,7 @@ export const CrearAula = () => {
                     estudiantes: [],
                     createdAt: serverTimestamp(),
                     profesores: [`${userData.nombre} ${userData.apellido}`],
+                    fechas: []
                 });
                 console.log("Documento agregado con ID:", docRef.id);
                 await addDoc(collection(db, "aulas", docRef.id, "chat"), {

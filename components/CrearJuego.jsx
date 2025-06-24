@@ -62,7 +62,6 @@ export const VerdaderoFalso = ({aulaId}) => {
                 texto: `🎮¡El/La profesor/a ${userData.nombre} ha iniciado un juego de Verdadero o Falso!🧠`,
                 timestamp: serverTimestamp(),
                 juegoId: docRef.id,
-                avatarRequire: require('../assets/avatars/icon.png')
             });
 
 

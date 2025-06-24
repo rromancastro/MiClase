@@ -6,6 +6,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import { SvgUri } from "react-native-svg";
+import { CachedSvg } from "./CachedSvg";
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -55,21 +56,14 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
                         <Text style={styles.miMensajeHora}>{horas}:{minutos}</Text>
                     </View>
                     <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
-                        {
-                            loadingImage ? <ActivityIndicator size={"small"} color={'grey'} /> : null
-                        }
-                        <SvgUri onLoad={() => setLoadingImage(false)} width="50" height="50" uri={userData.avatarUrl} />
-
+                        <CachedSvg uri={userData.avatarUrl} width="50" height="50" />
                     </View>
 
                 </TouchableOpacity>
                 :
                 <TouchableOpacity onLongPress={() => setShowEliminar(!showEliminar)} style={styles.otroMensaje}>
                     <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
-                        {
-                            loadingImage ? <ActivityIndicator size={"small"} color={'grey'} /> : null
-                        }
-                        <SvgUri onLoad={() => setLoadingImage(false)} width="50" height="50" uri={msjData.avatarUrl} />
+                        <CachedSvg uri={msjData.avatarUrl} width="50" height="50" />
                     </View>
                     <View>
                         <Text style={styles.otroMensajeNombre}>{msjData.senderName}</Text>
@@ -84,7 +78,7 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
             : msjData.tipo == 'juego' ?
                 <View style={styles.otroMensaje}>
                     <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
-                        <Image source={msjData.avatarRequire} style={{width: 30, height: 30, borderRadius: 20,}}/>
+                        <Image source={require('../assets/avatars/logo.png')} style={{width: 40, height: 40}}/>
                     </View>
                     <View>
                         <Text style={styles.otroMensajeNombre}>MiClase</Text>
