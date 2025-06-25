@@ -3,7 +3,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { VerdaderoFalso } from "./CrearJuego";
+import { CrearImpostor, CrearTrivia, CrearVerdaderoFalso  } from "../juegosComponents";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -69,7 +69,9 @@ export const IniciarJuego = ({aulaId}) => {
 
             </View> : 
 
-            section == 'verdaderoFalso' ? <VerdaderoFalso aulaId={aulaId}/> : null
+            section == 'verdaderoFalso' ? <CrearVerdaderoFalso aulaId={aulaId}/> : 
+            section == 'trivia' ? <CrearTrivia aulaId={aulaId}/> : 
+            section == 'impostor' ? <CrearImpostor aulaId={aulaId}/> : null
 
             }
         </View>

@@ -7,6 +7,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebaseConfig'; // Ajustá la ruta según tu estructura
 import { useUser } from '..//contexts/UserContext'; // Contexto que te expliqué antes
 import { AuthContext } from "../contexts/AuthContext";
+import Toast from "react-native-toast-message";
 
 export default function LoginComponent() {
 
@@ -18,20 +19,34 @@ export default function LoginComponent() {
   const [password, setPassword] = useState("");
   
   //errores
-  const [errorCredentials, setErrorCredentials] = useState(false);
-  const [emailDontExistsValue, setDontEmailExistsValue] = useState(false);
 
   const { setUserData } = useUser();
 
   const handleLogin = async () => {
-    setDontEmailExistsValue(false)
     const existe = await emailExists(email);
     if (!existe) {
-        setDontEmailExistsValue(true)
+      Toast.show({
+          type: 'error',
+          text1: 'Error al iniciar sesión',
+          text2: 'El correo no está registrado',
+      });
     } else {
+      if (email.length <= 0) {
+        Toast.show({
+            type: 'error',
+            text1: 'Error al iniciar sesión',
+            text2: 'El correo no puede estar vacío',
+        });
+      } else { 
+        if (password.length <= 0) {
+          Toast.show({
+              type: 'error',
+              text1: 'Error al iniciar sesión',
+              text2: 'La contraseña no puede estar vacía',
+          });
+        } else {
         try {
-      handleSignIn(email, password);
-      setErrorCredentials(false);
+      await handleSignIn(email, password);
       console.log("Login correcto");
 
       // Buscar documento del usuario en Firestore
@@ -50,9 +65,13 @@ export default function LoginComponent() {
       }
     } catch (error) {
       console.log("Login incorrecto", error);
-      setErrorCredentials(true);
+        Toast.show({
+            type: 'error',
+            text1: 'Error al iniciar sesión',
+            text2: 'El correo o contraseña es incorrecto',
+        });
     }
-    }
+    }}}
   };
 
 
@@ -73,14 +92,6 @@ export default function LoginComponent() {
         secureTextEntry
         style={styles.inputPassword}
       />
-
-        {
-            errorCredentials ? <Text>La contraseña es incorrecta.</Text> : null
-        }
-        {
-            emailDontExistsValue ? <Text>El correo ingresado no está registrado.</Text> : null
-        }
-
       <TouchableOpacity onPress={handleLogin}><Text style={styles.buttonAcceder}>ACCEDER</Text></TouchableOpacity>
     </View>
   );

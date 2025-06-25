@@ -67,10 +67,10 @@ export const ProfesorMain = () => {
             section == 'clases' ? 
                 <View style={styles.container}>
                     <Text style={styles.titleMainBienvenida}>{
-                        hora < 12 ? 'Buenos días,' :
-                        hora < 18 ? 'Buenas tardes,' : 
-                        hora < 21 ? 'Buenas noches, ' : null
-                        }</Text>
+                        hora >= 8 && hora < 12 ? 'Buenos días,' :
+                        hora >= 12 && hora < 21 ? 'Buenas tardes,' :
+                        (hora >= 21 || hora < 8) ? 'Buenas noches,' : null
+                    }</Text>
                     <Text style={styles.titleMain}>{`${userData.nombre}! 😁`}</Text>
                     <Text style={styles.subTitle}>Tus aulas:</Text>
                     <View style={styles.aulasContainer}>

@@ -4,7 +4,7 @@ import { View, Animated, StyleSheet, Dimensions } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 
-export const BarraDeTiempo = ({ duracion = 10, onTerminar }) => {
+export const BarraDeTiempo = ({ duracion = 10, onTerminar, backgroundColor }) => {
   const anchoAnimado = useRef(new Animated.Value(100)).current;
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const BarraDeTiempo = ({ duracion = 10, onTerminar }) => {
 
   return (
     <View style={styles.contenedor}>
-      <Animated.View style={[styles.barra, { width: anchoInterpolado }]} />
+      <Animated.View style={{...styles.barra, width: anchoInterpolado , backgroundColor: backgroundColor}} />
     </View>
   );
 };
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   },
   barra: {
     height: 20,
-    backgroundColor: '#DD750C',
   },
 });
 

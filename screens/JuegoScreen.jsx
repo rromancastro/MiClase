@@ -2,7 +2,7 @@ import { useRoute } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
 import getJuegoById from "../firebase/getJuegoById";
 import { View } from "react-native";
-import { VerdaderoFalsoJuego } from "../juegosComponents/VerdaderoFalsoJuego";
+import { ImpostorJuego, TriviaJuego, VerdaderoFalsoJuego } from "../juegosComponents" 
 import { Loader } from "../components";
 import { Audio } from "expo-av";
 
@@ -51,7 +51,9 @@ export default function JuegoScreen() {
         {
             loading ? <Loader /> : 
 
-            juegoData.tipo == 'verdaderoFalso' ? <VerdaderoFalsoJuego juegoId={juegoId} /> : null
+            juegoData.tipo == 'verdaderoFalso' ? <VerdaderoFalsoJuego juegoId={juegoId} /> :
+            juegoData.tipo == 'trivia' ? <TriviaJuego juegoId={juegoId} /> :
+            juegoData.tipo == 'impostor' ? <ImpostorJuego juegoId={juegoId} /> : null
         }
     </>)
 }

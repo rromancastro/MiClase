@@ -1,14 +1,14 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useEffect, useState } from "react"
-import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { db } from "../firebase/firebaseConfig";
-import { useUser } from "../contexts/UserContext";
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { db } from "../../firebase/firebaseConfig";
+import { useUser } from "../../contexts/UserContext";
 import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export const VerdaderoFalso = ({aulaId}) => {
+export const CrearVerdaderoFalso = ({aulaId}) => {
 
     const navigation = useNavigation();
 
@@ -59,7 +59,7 @@ export const VerdaderoFalso = ({aulaId}) => {
                 senderName: `${userData.nombre} ${userData.apellido}`,
                 senderId: userData.id,
                 tipo: 'juego',
-                texto: `🎮¡El/La profesor/a ${userData.nombre} ha iniciado un juego de Verdadero o Falso!🧠`,
+                texto: `🎮¡El/La profesor/a ${userData.nombre} ha iniciado un juego de Verdadero o Falso!✅❌🧠`,
                 timestamp: serverTimestamp(),
                 juegoId: docRef.id,
             });
@@ -74,24 +74,26 @@ export const VerdaderoFalso = ({aulaId}) => {
     
 
     return (
-        <View style={styles.container}>
-            <Image source={require('../assets/iconsgames/4.png')} style={styles.image} />
-            <TextInput style={styles.input} placeholder="Pregunta" onChangeText={(text) => setPregunta({...pregunta, pregunta: text})} value={pregunta.pregunta} />
-            <View style={styles.respuestas}>
-                <TouchableOpacity onPress={() => setPregunta({...pregunta, respuesta: true})}><Text style={{...styles.respuestaButton, backgroundColor: '#2EB38D', borderColor: borderColorVerdadero}} >Verdadero</Text></TouchableOpacity>
-                <TouchableOpacity onPress={() => setPregunta({...pregunta, respuesta: false})}><Text style={{...styles.respuestaButton, backgroundColor: '#EF4B4E', borderColor: borderColorFalso}} >Falso</Text></TouchableOpacity>
+        <ScrollView>
+            <View style={styles.container}>
+                <Image source={require('../../assets/iconsgames/4.png')} style={styles.image} />
+                <TextInput style={styles.input} placeholder="Pregunta" onChangeText={(text) => setPregunta({...pregunta, pregunta: text})} value={pregunta.pregunta} />
+                <View style={styles.respuestas}>
+                    <TouchableOpacity onPress={() => setPregunta({...pregunta, respuesta: true})}><Text style={{...styles.respuestaButton, backgroundColor: '#2EB38D', borderColor: borderColorVerdadero}} >Verdadero</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => setPregunta({...pregunta, respuesta: false})}><Text style={{...styles.respuestaButton, backgroundColor: '#EF4B4E', borderColor: borderColorFalso}} >Falso</Text></TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={handleAgregarPregunta}><Text style={styles.agregarButton}>Añadir pregunta</Text></TouchableOpacity>
+                {
+                    preguntas.map((pregunta, index) => {
+                        return <View key={index} style={styles.itemList}>
+                            <Text style={styles.itemListPregunta}>{`${index + 1}) ${pregunta.pregunta}`}</Text>
+                            <Text style={styles.itemListRespuesta}>{pregunta.respuesta ? 'Verdadero' : 'Falso'}</Text>
+                        </View>
+                    })
+                }
+                {preguntas.length > 0 ? <TouchableOpacity onPress={handleSubirJuego}><Text style={styles.iniciarButton}>Iniciar juego (Tus alumnos podrán unirse desde el chat grupal)</Text></TouchableOpacity> : null}
             </View>
-            <TouchableOpacity onPress={handleAgregarPregunta}><Text style={styles.agregarButton}>Añadir pregunta</Text></TouchableOpacity>
-            {
-                preguntas.map((pregunta, index) => {
-                    return <View key={index} style={styles.itemList}>
-                        <Text style={styles.itemListPregunta}>{`${index + 1}) ${pregunta.pregunta}`}</Text>
-                        <Text style={styles.itemListRespuesta}>{pregunta.respuesta ? 'Verdadero' : 'Falso'}</Text>
-                    </View>
-                })
-            }
-            {preguntas.length > 0 ? <TouchableOpacity onPress={handleSubirJuego}><Text style={styles.iniciarButton}>Iniciar juego (Tus alumnos podrán unirse desde el chat grupal)</Text></TouchableOpacity> : null}
-        </View>
+        </ScrollView>
     )
 }
 
@@ -180,6 +182,7 @@ const styles = StyleSheet.create({
         color: '#15334F',
         textAlign: 'center',
         fontWeight: '600',
-        backgroundColor: '#FDC63E'
+        backgroundColor: '#FDC63E',
+        marginBottom: 20
     },
 })

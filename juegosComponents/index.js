@@ -1,1 +1,6 @@
-export * from './VerdaderoFalso'
+export * from './VerdaderoFalso/CrearVerdaderoFalso'
+export * from './VerdaderoFalso/VerdaderoFalsoJuego'
+export * from './Trivia/CrearTrivia'
+export * from './Trivia/TriviaJuego'
+export * from './Impostor/CrearImpostor'
+export * from './Impostor/ImpostorJuego'
