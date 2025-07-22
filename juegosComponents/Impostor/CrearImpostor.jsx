@@ -4,7 +4,6 @@ import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOp
 import { db } from "../../firebase/firebaseConfig";
 import { useUser } from "../../contexts/UserContext";
 import { useNavigation } from "@react-navigation/native";
-import { ToastComponent } from "../../components";
 import Toast from "react-native-toast-message";
 
 const screenWidth = Dimensions.get('window').width;
@@ -97,16 +96,16 @@ export const CrearImpostor = ({aulaId}) => {
             <View style={styles.container}>
                 <Image source={require('../../assets/iconsgames/6.png')} style={styles.image} />
                 <TextInput style={styles.input} placeholder="Pregunta" onChangeText={(text) => setPregunta({...pregunta, pregunta: text})} value={pregunta.pregunta} />
-                <TextInput style={styles.input} placeholder="Posible Respuesta 1" onChangeText={(text) => setPregunta({...pregunta, respuesta1: text})} value={`1) ${pregunta.respuesta1}`} />
-                <TextInput style={styles.input} placeholder="Posible Respuesta 2" onChangeText={(text) => setPregunta({...pregunta, respuesta2: text})} value={`2) ${pregunta.respuesta2}`} />
-                <TextInput style={styles.input} placeholder="Posible Respuesta 3" onChangeText={(text) => setPregunta({...pregunta, respuesta3: text})} value={`3) ${pregunta.respuesta3}`} />
-                <TextInput style={styles.input} placeholder="Posible Respuesta 4" onChangeText={(text) => setPregunta({...pregunta, respuesta4: text})} value={`4) ${pregunta.respuesta4}`} />
+                <TextInput style={styles.input} placeholder="Posible Respuesta 1" onChangeText={(text) => setPregunta({...pregunta, respuesta1: text})} value={pregunta.respuesta1} />
+                <TextInput style={styles.input} placeholder="Posible Respuesta 2" onChangeText={(text) => setPregunta({...pregunta, respuesta2: text})} value={pregunta.respuesta2} />
+                <TextInput style={styles.input} placeholder="Posible Respuesta 3" onChangeText={(text) => setPregunta({...pregunta, respuesta3: text})} value={pregunta.respuesta3} />
+                <TextInput style={styles.input} placeholder="Posible Respuesta 4" onChangeText={(text) => setPregunta({...pregunta, respuesta4: text})} value={pregunta.respuesta4} />
                 <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#272625'}}>Respuesta incorrecta:</Text>
                 <View style={{flexDirection: 'row', gap: 20, marginVertical: 10}}>
-                    <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 1})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 1 ? '#EF494D' : '#2EB38D'}}>1</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 2})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 2 ? '#EF494D' : '#2EB38D'}}>2</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 3})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 3 ? '#EF494D' : '#2EB38D'}}>3</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 4})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 4 ? '#EF494D' : '#2EB38D'}}>4</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 1})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 1 ? '#EF494D' : '#2EB38D',boxShadow: '3px 3px 0px #DBDCDC'}}>1</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 2})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 2 ? '#EF494D' : '#2EB38D',boxShadow: '3px 3px 0px #DBDCDC'}}>2</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 3})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 3 ? '#EF494D' : '#2EB38D',boxShadow: '3px 3px 0px #DBDCDC'}}>3</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 4})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 4 ? '#EF494D' : '#2EB38D',boxShadow: '3px 3px 0px #DBDCDC'}}>4</Text></TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={handleAgregarPregunta}><Text style={styles.agregarButton}>Añadir pregunta</Text></TouchableOpacity>
                 {
@@ -141,15 +140,16 @@ const styles = StyleSheet.create({
         objectFit: 'contain'
     },
     input: {
-        width: screenWidth * 0.85,
-        borderWidth: 1,
-        borderColor: '#E3E8EC',
-        borderRadius: 20,
         fontFamily: 'Roboto',
-        padding: 20,
         fontSize: 18,
         color: '#272625',
         outlineStyle: 'none',
+        width: screenWidth * 0.85,
+        height: screenHeight * 0.08,
+        borderRadius: 30,
+        paddingLeft: 20,
+        backgroundColor: '#Fafafa',
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     buttonCorrecta: {
         paddingHorizontal: 20,
@@ -162,8 +162,6 @@ const styles = StyleSheet.create({
     },
     agregarButton: {
         width: screenWidth * 0.8,
-        borderWidth: 1,
-        borderColor: '#E3E8EC',
         borderRadius: 20,
         fontFamily: 'Roboto',
         padding: 20,
@@ -171,17 +169,17 @@ const styles = StyleSheet.create({
         color: '#fafafa',
         textAlign: 'center',
         fontWeight: '600',
-        backgroundColor: '#3580CF'
+        backgroundColor: '#3580CF',
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     itemList: {
         width: screenWidth * 0.85,
-        borderWidth: 1,
-        borderColor: '#E3E8EC',
         borderRadius: 20,
         padding: 20,
         marginVertical: 10,
         display: 'flex',
-        gap: 20
+        gap: 20,
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     itemListPregunta: {
         fontFamily: 'Roboto',

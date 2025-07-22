@@ -173,8 +173,8 @@ export default function CreateAccountScreen() {
         
     }
 
-    return (<SafeAreaView style={{flex: 1, backgroundColor: '#FBFBFB'}}>
-        <ScrollView style={{flex: 1, backgroundColor: '#FBFBFB'}}>
+    return (<SafeAreaView style={{flex: 1, backgroundColor: '#F6F6F5'}}>
+        <ScrollView style={{flex: 1, backgroundColor: '#F6F6F5'}}>
         <View style={styles.container}>
                     {
                         loadingAvatar ? <View style={{width: 200, height: 200, justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
@@ -184,10 +184,13 @@ export default function CreateAccountScreen() {
                     <SvgUri onLoad={() => setLoadingAvatar(false)} width="200" height="200" uri={avatarUrl} marginTop={30}/>
         
                     <Text style={styles.title}>Crea tu cuenta</Text>
-                    <View style={{flexDirection: 'row', gap: 10, marginBottom: 20}}>
-                        <TouchableOpacity onPress={() => setSection('data')}><Text style={{padding: 10, color: '#fafafa', borderRadius: 10, backgroundColor: section =='data' ? '#4D8CE7' : '#888A88' }}>Información</Text></TouchableOpacity>
-                        <TouchableOpacity onPress={() => setSection('avatar')}><Text style={{padding: 10, color: '#fafafa', borderRadius: 10, backgroundColor: section =='avatar' ? '#4D8CE7' : '#888A88' }}>Avatar</Text></TouchableOpacity>
-                    </View>
+                    <View style={{flexDirection: 'row', marginBottom: 20, width: screenWidth * .7, backgroundColor: '#BFC3C4', borderRadius: 50}}>
+                                                <TouchableOpacity onPress={() => setSection('data')} style={{justifyContent: 'center', width: '50%', alignItems: 'center',height: screenHeight * .0400, backgroundColor: section === 'data' ? '#39699E' : '#BFC3C4', borderRadius: 50}}>
+                                                    <Text style={{...styles.mainNavBarText, fontWeight: 800,color: section === 'data' ? '#FAFAFA' : '#273D5E'}}>Información</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => setSection('avatar')} style={{justifyContent: 'center', width: '50%', alignItems: 'center',height: screenHeight * .0400, backgroundColor: section === 'avatar' ? '#39699E' : '#BFC3C4', borderRadius: 50}}>
+                                                    <Text style={{...styles.mainNavBarText, fontWeight: 800,color: section === 'avatar' ? '#FAFAFA' : '#273D5E'}}>Avatar</Text>
+                                                </TouchableOpacity>                    </View>
                     {section == 'avatar' ? <View >
                         <View style={{height: 30}}>
                             <FlatList
@@ -417,7 +420,7 @@ const styles = StyleSheet.create({
     fontWeight: '300'
   },
   buttonAcceder: {
-    backgroundColor: '#4D8CE7',
+    backgroundColor: '#39699E',
     width: 320,
     paddingVertical: 10,
     fontFamily: 'Roboto',

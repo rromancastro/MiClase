@@ -72,10 +72,6 @@ export const ChatComponent = ({aulaId}) => {
 
 
     return (<View style={styles.container}>
-                <View style={styles.nav}>
-                    <TouchableOpacity onPress={() => navigation.replace("Aula", {aulaId: aulaId})}><AntDesign name="arrowleft" size={34} color='#363838' style={styles.navBack} /></TouchableOpacity>
-                    <Text style={styles.navText}>Chat grupal</Text>
-                </View>
                 {mensajes.length == 0 ? <Loader /> :<ScrollView ref={scrollViewRef} style={styles.mensajesContainer}>
                     {
                         mensajes.map((msg) => {
@@ -111,17 +107,6 @@ const styles = StyleSheet.create({
         borderBottomColor: '#EFEEE7',
         borderBottomWidth: 1,
         width: screenWidth
-    },
-    navBack: {
-        height: 34,
-        width: 34,
-    },
-    navText: {
-        color: '#363838',
-        fontFamily: 'Roboto',
-        fontSize: 20,
-        fontWeight: 600,
-        marginLeft: 20
     },
     mensajesContainer: {
         flex: 1,

@@ -18,7 +18,7 @@ export default function MainScreen(){
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FBFBFB',
+        backgroundColor: '#F6F6F5',
         flex: 1,
         padding: 30,
         paddingBottom: 0,

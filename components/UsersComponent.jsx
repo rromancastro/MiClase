@@ -44,10 +44,8 @@ export const UsersAula = ({dataAula}) => {
     }
 
     return (<ScrollView key={estudiantes}  style={styles.container}>
-                <View style={styles.nav}>
-                    <TouchableOpacity onPress={() => navigation.replace("Aula", {aulaId: dataAula.id})}><AntDesign name="arrowleft" size={34} color='#363838' style={styles.navBack} /></TouchableOpacity>
-                    <Text style={styles.navText}>Participantes</Text>
-                </View>
+                    <Text style={{fontFamily: 'Roboto', fontSize: 49, alignSelf: 'flex-start', fontWeight: '700', color: '#373B45'}}>Participantes</Text>
+
                 <Text style={styles.subtitle}>👨‍🏫 Profesor/res: 👩‍🏫</Text>
                 {
                     profesores.map((profesor) => {
@@ -84,26 +82,6 @@ export const UsersAula = ({dataAula}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    nav: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: screenWidth * .1,
-        height: screenHeight * .08,
-        borderBottomColor: '#EFEEE7',
-        borderBottomWidth: 1,
-        width: screenWidth
-    },
-    navBack: {
-        height: 34,
-        width: 34,
-    },
-    navText: {
-        color: '#363838',
-        fontFamily: 'Roboto',
-        fontSize: 20,
-        fontWeight: 600,
-        marginLeft: 20
     },
     subtitle: {
         fontSize: 20,

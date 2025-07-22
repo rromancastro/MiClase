@@ -1,14 +1,17 @@
 import { Dimensions, Image } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { CrearImpostor, CrearTrivia, CrearVerdaderoFalso  } from "../juegosComponents";
+import { CrearImpostor, CrearPalabraFaltante, CrearTrivia, CrearVerdaderoFalso  } from "../juegosComponents";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export const IniciarJuego = ({aulaId}) => {
+export default function IniciarJuegoScreen() {
+    
+    const route = useRoute();
+    const {aulaId} = route.params;
 
     const navigation = useNavigation();
 
@@ -27,11 +30,7 @@ export const IniciarJuego = ({aulaId}) => {
     
     return (
         <View style={styles.container}>
-            <View style={styles.nav}>
-                <TouchableOpacity onPress={() => navigation.replace("Aula", {aulaId: aulaId})}><AntDesign name="arrowleft" size={34} color='#363838' style={styles.navBack} /></TouchableOpacity>
-                <Text style={styles.navText}>Iniciar juego</Text>
-            </View>
-            <Text style={styles.title}>{titulo}</Text>
+            <Text style={styles.subtitle}>{titulo}</Text>
             
             {
 
@@ -47,19 +46,9 @@ export const IniciarJuego = ({aulaId}) => {
                     <Text style={styles.juegosText}>Trivia</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => setSection('parejas')} style={{...styles.juegoCard}}>
-                    <Image source={require('../assets/iconsgames/3.png')} style={styles.juegosImage} />
-                    <Text style={styles.juegosText}>Parejas</Text>
-                </TouchableOpacity>
-
                 <TouchableOpacity onPress={() => setSection('verdaderoFalso')} style={{...styles.juegoCard}}>
                     <Image source={require('../assets/iconsgames/4.png')} style={styles.juegosImage} />
                     <Text style={styles.juegosText}>Verdadero o falso</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => setSection('caminoDelSaber')} style={{...styles.juegoCard}}>
-                    <Image source={require('../assets/iconsgames/5.png')} style={styles.juegosImage} />
-                    <Text style={styles.juegosText}>Camino del saber</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => setSection('impostor')} style={{...styles.juegoCard}}>
@@ -71,7 +60,8 @@ export const IniciarJuego = ({aulaId}) => {
 
             section == 'verdaderoFalso' ? <CrearVerdaderoFalso aulaId={aulaId}/> : 
             section == 'trivia' ? <CrearTrivia aulaId={aulaId}/> : 
-            section == 'impostor' ? <CrearImpostor aulaId={aulaId}/> : null
+            section == 'impostor' ? <CrearImpostor aulaId={aulaId}/> :
+            section == 'palabraFaltante' ? <CrearPalabraFaltante aulaId={aulaId}/> : null
 
             }
         </View>
@@ -81,35 +71,22 @@ export const IniciarJuego = ({aulaId}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        display: 'flex',
         gap: 10,
-        alignItems: 'center',
+        backgroundColor: '#F6F6F5',
+        padding: 30
+    },
+    subtitle: {
+        fontFamily: 'Roboto',
+        fontSize: 27,
+        color: '#373B45',
+        marginBottom: 20,
+        marginTop: 50
     },
     title: {
         fontSize: 36,
         fontFamily: 'Roboto',
         fontWeight: '600',
         color: '#272625',
-    },
-    nav: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: screenWidth * .1,
-        height: screenHeight * .08,
-        borderBottomColor: '#EFEEE7',
-        borderBottomWidth: 1,
-        width: screenWidth
-    },
-    navBack: {
-        height: 34,
-        width: 34,
-    },
-    navText: {
-        color: '#363838',
-        fontFamily: 'Roboto',
-        fontSize: 20,
-        fontWeight: 600,
-        marginLeft: 20
     },
     juegosContainer: {
         flex: 1,
@@ -121,19 +98,21 @@ const styles = StyleSheet.create({
     juegoCard: {
         width: screenWidth * 0.4,
         height: screenHeight * 0.25,
-        borderRadius: 10,
+        borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#Fafafa',
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     juegosImage: {
-        width: 150,
-        height: 140,
+        width: 110,
+        height: 100,
         objectFit: 'contain',
     },
     juegosText: {
         fontFamily: 'Roboto',
         fontSize: 20,
         color: '#363838',
-        fontWeight: '700'
+        textAlign: 'center',
     },
 })

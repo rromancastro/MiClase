@@ -10,11 +10,14 @@ import { db } from "../firebase/firebaseConfig";
 import Toast from "react-native-toast-message";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Picker } from "@react-native-picker/picker";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 export const Calendario = ({ dataAula }) => {
+
+    const navigation = useNavigation();
 
     const anioActual = new Date().getFullYear();
 
@@ -120,7 +123,9 @@ export const Calendario = ({ dataAula }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Calendario</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 40, alignSelf: 'flex-start'}}>
+                    <Text style={{fontFamily: 'Roboto', fontSize: 49, alignSelf: 'flex-start', fontWeight: '700', color: '#373B45'}}>Calendario</Text>
+                </View>
       <Calendar
         firstDay={1}
         onDayPress={day => {
@@ -129,7 +134,7 @@ export const Calendario = ({ dataAula }) => {
         markedDates={markedDates}
         style={styles.calendario}
         theme={{
-            calendarBackground: '#FBFBFB',
+            calendarBackground: '#F6F6F5',
             textSectionTitleColor: '#373B46',
             selectedDayBackgroundColor: '#577AB8',
             selectedDayTextColor: '#fafafa',
@@ -262,7 +267,8 @@ export const Calendario = ({ dataAula }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        gap: 10,
     },
     title: {
         fontFamily: 'Roboto',
@@ -274,11 +280,12 @@ const styles = StyleSheet.create({
     },
     calendario: {
         marginTop: 20,
-        backgroundColor: '#FBFBFB',
+        backgroundColor: '#F6F6F5',
         marginHorizontal: 20,
     },
     fechaCard: {
-        backgroundColor: 'white',
+        backgroundColor: '#fafafa',
+        boxShadow: '3px 3px 0px #DBDCDC',
         width: screenWidth * 0.9,
         borderRadius: 20,
         flexDirection: 'row',

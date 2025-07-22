@@ -108,15 +108,16 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     input: {
-        width: screenWidth * 0.85,
-        borderWidth: 1,
-        borderColor: '#E3E8EC',
-        borderRadius: 20,
         fontFamily: 'Roboto',
-        padding: 20,
         fontSize: 18,
         color: '#272625',
         outlineStyle: 'none',
+        width: screenWidth * 0.85,
+        height: screenHeight * 0.08,
+        borderRadius: 30,
+        paddingLeft: 20,
+        backgroundColor: '#Fafafa',
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     respuestas: {
         flexDirection: 'row',
@@ -125,8 +126,6 @@ const styles = StyleSheet.create({
     },
     respuestaButton: {
         width: screenWidth * 0.4,
-        borderWidth: 1,
-        borderColor: '#E3E8EC',
         borderRadius: 20,
         fontFamily: 'Roboto',
         padding: 20,
@@ -134,7 +133,8 @@ const styles = StyleSheet.create({
         color: '#fafafa',
         textAlign: 'center',
         fontWeight: '600',
-        borderWidth: 8
+        borderWidth: 8,
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     agregarButton: {
         width: screenWidth * 0.8,
@@ -147,18 +147,18 @@ const styles = StyleSheet.create({
         color: '#fafafa',
         textAlign: 'center',
         fontWeight: '600',
-        backgroundColor: '#3580CF'
+        backgroundColor: '#3580CF',
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     itemList: {
         width: screenWidth * 0.85,
-        borderWidth: 1,
-        borderColor: '#E3E8EC',
         borderRadius: 20,
         padding: 20,
         marginVertical: 10,
         display: 'flex',
         flexDirection: 'row',
-        gap: 20
+        gap: 20,
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     itemListPregunta: {
         fontFamily: 'Roboto',

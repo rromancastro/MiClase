@@ -37,31 +37,8 @@ export default function AulaScreen() {
 
         if (!aula) return <Loader />;
 
-//     const aulaPrueba = {
-//     color: "#F16A62",
-//     createdAt: {
-//         "seconds": 1748456430,
-//         "nanoseconds": 391000000
-//     },
-//     emailProfesor: "rp@gmail.com",
-//     nombreProfesor: "Roman",
-//     apellidoProfesor: "Castro",
-//     codigo: "873919",
-//     profesores: [
-//         "Roman Castro"
-//     ],
-//     nombre: "Historia",
-//     estudiantes: [],
-//     icono: "book",
-//     id: 'Rn8Q87J2gCWKnlNtpJtX'
-// }
-
-//     const userData = {
-//         rol: 'profesor'
-//     }
-
     return (
-        <SafeAreaView style={{backgroundColor: '#FBFBFB', flex: 1}}>
+        <SafeAreaView style={{backgroundColor: '#F6F6F5', flex: 1}}>
             <AulaComponent dataAula={aula} />
         </SafeAreaView>
     )

@@ -4,13 +4,12 @@ import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOp
 import { db } from "../../firebase/firebaseConfig";
 import { useUser } from "../../contexts/UserContext";
 import { useNavigation } from "@react-navigation/native";
-import { ToastComponent } from "../../components";
 import Toast from "react-native-toast-message";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export const CrearTrivia = ({aulaId}) => {
+export const CrearPalabraFaltante = ({aulaId}) => {
 
     const navigation = useNavigation();
 
@@ -48,7 +47,7 @@ export const CrearTrivia = ({aulaId}) => {
                     Toast.show({
                     type: 'error',
                     text1: 'Error al agregar pregunta',
-                    text2: 'Asegurate de seleccionar la respuesta correcta',
+                    text2: 'Asegurate de seleccionar la respuesta incorrecta',
                     });
                 } else {
                     setPreguntas([...preguntas, pregunta])
@@ -61,7 +60,7 @@ export const CrearTrivia = ({aulaId}) => {
     const handleSubirJuego = async () => {
         try {
             const docRef = await addDoc(collection(db, "juegos"), {
-                tipo: 'trivia',
+                tipo: 'impostor',
                 preguntas: preguntas,
                 activo: false,
                 resultados: [],
@@ -78,7 +77,7 @@ export const CrearTrivia = ({aulaId}) => {
                 senderName: `${userData.nombre} ${userData.apellido}`,
                 senderId: userData.id,
                 tipo: 'juego',
-                texto: `🎮¡El/La profesor/a ${userData.nombre} ha iniciado un juego de Trivia!⁉️🤔🧠`,
+                texto: `🎮¡El/La profesor/a ${userData.nombre} ha iniciado un juego de Impostor❌🥷!🧠`,
                 timestamp: serverTimestamp(),
                 juegoId: docRef.id,
             });
@@ -93,15 +92,16 @@ export const CrearTrivia = ({aulaId}) => {
     
 
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
-                <Image source={require('../../assets/iconsgames/2.png')} style={styles.image} />
-                <TextInput style={styles.input} placeholder="Pregunta" onChangeText={(text) => setPregunta({...pregunta, pregunta: text})} value={pregunta.pregunta} />
+                <Image source={require('../../assets/iconsgames/1.png')} style={styles.image} />
+                <Text style={{fontFamily: 'Roboto', fontSize: 14, alignSelf: 'flex-start'}}>Remplaza la palabra faltante con _______</Text>
+                <TextInput style={styles.input} placeholder="Texto" onChangeText={(text) => setPregunta({...pregunta, pregunta: text})} value={pregunta.pregunta} />
                 <TextInput style={styles.input} placeholder="Posible Respuesta 1" onChangeText={(text) => setPregunta({...pregunta, respuesta1: text})} value={pregunta.respuesta1} />
                 <TextInput style={styles.input} placeholder="Posible Respuesta 2" onChangeText={(text) => setPregunta({...pregunta, respuesta2: text})} value={pregunta.respuesta2} />
                 <TextInput style={styles.input} placeholder="Posible Respuesta 3" onChangeText={(text) => setPregunta({...pregunta, respuesta3: text})} value={pregunta.respuesta3} />
                 <TextInput style={styles.input} placeholder="Posible Respuesta 4" onChangeText={(text) => setPregunta({...pregunta, respuesta4: text})} value={pregunta.respuesta4} />
-                <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#272625'}}>Respuesta correcta:</Text>
+                <Text style={{fontFamily: 'Roboto', fontSize: 16, color: '#272625'}}>Palabra correcta:</Text>
                 <View style={{flexDirection: 'row', gap: 20, marginVertical: 10}}>
                     <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 1})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 1 ? '#2EB38D' : '#EF494D',boxShadow: '3px 3px 0px #DBDCDC'}}>1</Text></TouchableOpacity>
                     <TouchableOpacity onPress={()=>setPregunta({...pregunta, respuestaCorrecta: 2})}><Text style={{...styles.buttonCorrecta, backgroundColor: pregunta.respuestaCorrecta === 2 ? '#2EB38D' : '#EF494D',boxShadow: '3px 3px 0px #DBDCDC'}}>2</Text></TouchableOpacity>
@@ -114,10 +114,10 @@ export const CrearTrivia = ({aulaId}) => {
                         return <View key={index} style={styles.itemList}>
                             <Text style={styles.itemListPregunta}>{`${index + 1}) ${pregunta.pregunta}`}</Text>
                             <View style={{flexDirection: 'row', gap: 20, flexWrap: 'wrap'}}>
-                                <Text style={{...styles.itemListRespuesta, backgroundColor: pregunta.respuestaCorrecta === 1 ? '#2EB38D' : '#EF494D'}}>{pregunta.respuesta1}</Text>
-                                <Text style={{...styles.itemListRespuesta, backgroundColor: pregunta.respuestaCorrecta === 2 ? '#2EB38D' : '#EF494D'}}>{pregunta.respuesta2}</Text>
-                                <Text style={{...styles.itemListRespuesta, backgroundColor: pregunta.respuestaCorrecta === 3 ? '#2EB38D' : '#EF494D'}}>{pregunta.respuesta3}</Text>  
-                                <Text style={{...styles.itemListRespuesta, backgroundColor: pregunta.respuestaCorrecta === 4 ? '#2EB38D' : '#EF494D'}}>{pregunta.respuesta4}</Text>
+                                <Text style={{...styles.itemListRespuesta, backgroundColor: pregunta.respuestaCorrecta === 1 ? '#EF494D' : '#2EB38D'}}>{pregunta.respuesta1}</Text>
+                                <Text style={{...styles.itemListRespuesta, backgroundColor: pregunta.respuestaCorrecta === 2 ? '#EF494D' : '#2EB38D'}}>{pregunta.respuesta2}</Text>
+                                <Text style={{...styles.itemListRespuesta, backgroundColor: pregunta.respuestaCorrecta === 3 ? '#EF494D' : '#2EB38D'}}>{pregunta.respuesta3}</Text>  
+                                <Text style={{...styles.itemListRespuesta, backgroundColor: pregunta.respuestaCorrecta === 4 ? '#EF494D' : '#2EB38D'}}>{pregunta.respuesta4}</Text>
                             </View>
                         </View>
                     })
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         backgroundColor: '#Fafafa',
         boxShadow: '3px 3px 0px #DBDCDC'
-        
     },
     buttonCorrecta: {
         paddingHorizontal: 20,
@@ -202,6 +201,8 @@ const styles = StyleSheet.create({
     },
     iniciarButton: {
         width: screenWidth * 0.8,
+        borderWidth: 1,
+        borderColor: '#E3E8EC',
         borderRadius: 20,
         fontFamily: 'Roboto',
         padding: 20,

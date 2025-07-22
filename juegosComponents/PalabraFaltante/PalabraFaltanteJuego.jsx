@@ -15,7 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export const TriviaJuego = ({juegoId}) => {
+export const PalabraFaltanteJuego = ({juegoId}) => {
 
   const navigation = useNavigation();
 
@@ -150,8 +150,8 @@ export const TriviaJuego = ({juegoId}) => {
             loading ? <Loader /> :
 
             !juegoData.activo ? <View style={styles.container}>
-                <Image source={require('../../assets/iconsgames/2.png')} style={styles.image} />
-                <Text style={styles.text}>Trivia</Text>
+                <Image source={require('../../assets/iconsgames/6.png')} style={styles.image} />
+                <Text style={styles.text}>Impostor</Text>
                 <Text style={{...styles.text, fontSize: 16, width: screenWidth * .8, textAlign: 'center'}}>Mientras mas rapido respondas, más puntos ganarás!</Text>
                 {userData.rol === 'profesor' ? <TouchableOpacity onPress={handleIniciarJuego}><Text style={styles.buttonIniciar}>Iniciar juego</Text></TouchableOpacity> : null}
                 {userData.rol === 'estudiante' ? showUnirse ? <TouchableOpacity onPress={handleUnirse}><Text style={styles.buttonIniciar}>Unirme</Text></TouchableOpacity> : null : null}
@@ -177,15 +177,15 @@ export const TriviaJuego = ({juegoId}) => {
                     juegoData.preguntaActual <= juegoData.preguntas.length ? <View style={{alignItems: 'center', justifyContent: 'center'}}>
 
                     <View style={styles.preguntaContainer}>
-                        <Image source={require('../../assets/iconsgames/2.png')} style={styles.image} />
-                        <Text style={styles.text}>Trivia</Text>
-                        <BarraDeTiempo key={juegoData.preguntaActual} backgroundColor={'#1761B1'} duracion={10} onTerminar={() => console.log('siguiente pregunta')} />
+                        <Image source={require('../../assets/iconsgames/6.png')} style={styles.image} />
+                        <Text style={styles.text}>Impostor</Text>
+                        <BarraDeTiempo key={juegoData.preguntaActual} backgroundColor={'#C1363C'} duracion={10} onTerminar={() => console.log('siguiente pregunta')} />
                         <Text style={styles.preguntaText}>{juegoData.preguntas[juegoData.preguntaActual - 1].pregunta}</Text>
                         <View style={{flexDirection: 'row', gap: 10, flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
-                          <TouchableOpacity disabled={userData.rol === 'profesor' ? true : buttonDisableds}onPress={() => handleRespuesta(1)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#FEC63E',borderColor: respuesta === 1 ? '#fafafa' : '#1761B1'}}>{juegoData.preguntas[juegoData.preguntaActual - 1].respuesta1}</Text></TouchableOpacity>
-                          <TouchableOpacity disabled={userData.rol === 'profesor' ? true : buttonDisableds}onPress={() => handleRespuesta(2)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#2FB38F',borderColor: respuesta === 2 ? '#fafafa' : '#1761B1'}}>{juegoData.preguntas[juegoData.preguntaActual - 1].respuesta2}</Text></TouchableOpacity>
-                          <TouchableOpacity disabled={userData.rol === 'profesor' ? true : buttonDisableds}onPress={() => handleRespuesta(3)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#EF494D',borderColor: respuesta === 3 ? '#fafafa' : '#1761B1'}}>{juegoData.preguntas[juegoData.preguntaActual - 1].respuesta3}</Text></TouchableOpacity>
-                          <TouchableOpacity disabled={userData.rol === 'profesor' ? true : buttonDisableds}onPress={() => handleRespuesta(4)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#3782D1',borderColor: respuesta === 4 ? '#fafafa' : '#1761B1'}}>{juegoData.preguntas[juegoData.preguntaActual - 1].respuesta4}</Text></TouchableOpacity>
+                          <TouchableOpacity disabled={userData.rol === 'profesor' ? true : buttonDisableds}onPress={() => handleRespuesta(1)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#EC4C53',borderColor: respuesta === 1 ? '#fafafa' : '#C1363C'}}>{juegoData.preguntas[juegoData.preguntaActual - 1].respuesta1}</Text></TouchableOpacity>
+                          <TouchableOpacity disabled={userData.rol === 'profesor' ? true : buttonDisableds}onPress={() => handleRespuesta(2)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#EC4C53',borderColor: respuesta === 2 ? '#fafafa' : '#C1363C'}}>{juegoData.preguntas[juegoData.preguntaActual - 1].respuesta2}</Text></TouchableOpacity>
+                          <TouchableOpacity disabled={userData.rol === 'profesor' ? true : buttonDisableds}onPress={() => handleRespuesta(3)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#EC4C53',borderColor: respuesta === 3 ? '#fafafa' : '#C1363C'}}>{juegoData.preguntas[juegoData.preguntaActual - 1].respuesta3}</Text></TouchableOpacity>
+                          <TouchableOpacity disabled={userData.rol === 'profesor' ? true : buttonDisableds}onPress={() => handleRespuesta(4)}><Text style={{...styles.buttonRespuesta, backgroundColor: '#EC4C53',borderColor: respuesta === 4 ? '#fafafa' : '#C1363C'}}>{juegoData.preguntas[juegoData.preguntaActual - 1].respuesta4}</Text></TouchableOpacity>
                         </View>
                     </View>
                     
@@ -198,27 +198,27 @@ export const TriviaJuego = ({juegoId}) => {
                             {topFive[1] ? <View style={{alignItems: 'center',}}>
                                 <CachedSvg width="50" height="50" uri={topFive[1].avatarRequired} />
                                 <Text style={{fontFamily: 'Roboto', marginBottom: 5,fontSize: 18, color: '#fafafa', fontWeight: 700}}>{topFive[1].nombre}</Text>
-                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#57A4F1', borderRadius: 7, padding: 7}}>{topFive[1].puntos} Puntos</Text>
-                                <View style={{backgroundColor:'#57A4F1', height: 20, width: screenWidth * .26, borderTopLeftRadius: 20}} />
-                                <View style={{backgroundColor:'#1761B1', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#EC4C53', borderRadius: 7, padding: 7}}>{topFive[1].puntos} Puntos</Text>
+                                <View style={{backgroundColor:'#EC4C53', height: 20, width: screenWidth * .26, borderTopLeftRadius: 20}} />
+                                <View style={{backgroundColor:'#C1363C', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
                                   <Text style={{fontSize: 80, fontFamily: 'Roboto', fontWeight: 700, color: '#fafafa', marginBottom: 10}}>2</Text>
                                 </View>
                             </View> : null}
                             <View style={{alignItems: 'center',}}>
                                 <CachedSvg width="50" height="50" uri={topFive[0].avatarRequired} />
                                 <Text style={{fontFamily: 'Roboto', marginBottom: 5,fontSize: 18, color: '#fafafa', fontWeight: 700}}>{topFive[0].nombre}</Text>
-                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#57A4F1', borderRadius: 7, padding: 7}}>{topFive[0].puntos} Puntos</Text>
-                                <View style={{backgroundColor:'#57A4F1', height: 20, width: screenWidth * .26, borderTopLeftRadius: 20, borderTopRightRadius: 20}} />
-                                <View style={{backgroundColor:'#1761B1', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#EC4C53', borderRadius: 7, padding: 7}}>{topFive[0].puntos} Puntos</Text>
+                                <View style={{backgroundColor:'#EC4C53', height: 20, width: screenWidth * .26, borderTopLeftRadius: 20, borderTopRightRadius: 20}} />
+                                <View style={{backgroundColor:'#C1363C', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
                                   <Text style={{fontSize: 90, fontFamily: 'Roboto', fontWeight: 700, color: '#fafafa', marginBottom: 20}}>1</Text>
                                 </View>
                             </View>
                             {topFive[2] ? <View style={{alignItems: 'center',}}>
                                 <CachedSvg width="50" height="50" uri={topFive[2].avatarRequired} />
                                 <Text style={{fontFamily: 'Roboto', marginBottom: 5,fontSize: 18, color: '#fafafa', fontWeight: 700}}>{topFive[2].nombre}</Text>
-                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#57A4F1', borderRadius: 7, padding: 7}}>{topFive[2].puntos} Puntos</Text>
-                                <View style={{backgroundColor:'#57A4F1', height: 20, width: screenWidth * .26, borderTopRightRadius: 20}} />
-                                <View style={{backgroundColor:'#1761B1', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={{fontFamily: 'Roboto', marginBottom: 10,fontSize: 16, color: '#fafafa', fontWeight: 700, backgroundColor: '#EC4C53', borderRadius: 7, padding: 7}}>{topFive[2].puntos} Puntos</Text>
+                                <View style={{backgroundColor:'#EC4C53', height: 20, width: screenWidth * .26, borderTopRightRadius: 20}} />
+                                <View style={{backgroundColor:'#C1363C', width: screenWidth * .26, justifyContent: 'center', alignItems: 'center'}}>
                                   <Text style={{fontSize: 70, fontFamily: 'Roboto', fontWeight: 700, color: '#fafafa'}}>3</Text>
                                 </View>
                             </View> : null}
@@ -233,10 +233,10 @@ export const TriviaJuego = ({juegoId}) => {
                       <CachedSvg uri={userData.avatarUrl} width={180} height={110} marginBottom={20} />
                       <Text style={{fontFamily: 'Roboto', fontSize: 24, color: '#fafafa', fontWeight: 700}}>¡Felicidades, {userData.nombre}!</Text>
                       <Text style={{fontFamily: 'Roboto', fontSize: 24, color: '#fafafa', fontWeight: 700, marginBottom: 20}}>¡Has ganado {puntosTotales} puntos!</Text>
-                      <Text style={{fontFamily: 'Roboto', marginBottom: 10 , fontSize: 24, color: '#fafafa', fontWeight: 700, backgroundColor: '#1761B1', padding: 10, borderRadius: 20, width: screenWidth * .4, textAlign: 'center'}}>Top 5:</Text>
+                      <Text style={{fontFamily: 'Roboto', marginBottom: 10 , fontSize: 24, color: '#fafafa', fontWeight: 700, backgroundColor: '#C1363C', padding: 10, borderRadius: 20, width: screenWidth * .4, textAlign: 'center'}}>Top 5:</Text>
                         {
                           topFive.map((participante, index) => {
-                              return topFive[index] ? <View key={index} style={{flexDirection: "row", marginBottom: 10 , gap: 10, alignItems: 'center',backgroundColor: '#1761B1', padding: 15, borderRadius: 20, width: screenWidth * .8}} > 
+                              return topFive[index] ? <View key={index} style={{flexDirection: "row", marginBottom: 10 , gap: 10, alignItems: 'center',backgroundColor: '#C1363C', padding: 15, borderRadius: 20, width: screenWidth * .8}} > 
                               {
                                 index === 0 ? <FontAwesome5 name="medal" size={24} color="#F9C932" style={{backgroundColor: 'rgb(255, 255, 255)', padding: 10, borderRadius: 30}}/> :
                                 index === 1 ? <FontAwesome5 name="medal" size={24} color="#E0E5EB" style={{backgroundColor: 'rgb(255, 255, 255)', padding: 10, borderRadius: 30}}/> :
@@ -260,7 +260,7 @@ export const TriviaJuego = ({juegoId}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#2481E0',
+        backgroundColor: '#E0454B',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     buttonIniciar: {
         width: screenWidth * 0.6,
         padding: 20,
-        backgroundColor: '#F8C931',
+        backgroundColor: '#C1363C',
         borderRadius: 20,
         fontFamily: 'Roboto',
         color: '#fafafa',
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
         color: '#fafafa',
         fontWeight: '600',
         textAlign: 'center',
-        backgroundColor: '#1862B2',
+        backgroundColor: '#C1363C',
         padding: 20,
         borderRadius: 20,
         marginVertical: 10

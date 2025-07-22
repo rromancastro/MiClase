@@ -1,15 +1,18 @@
 import { useContext, useState } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, Image, Dimensions } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import emailExists from "../firebase/userExists";
 import { useNavigation } from '@react-navigation/native';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { auth, db } from '../firebase/firebaseConfig'; // Ajustá la ruta según tu estructura
-import { useUser } from '..//contexts/UserContext'; // Contexto que te expliqué antes
+import { auth, db } from '../firebase/firebaseConfig';
+import { useUser } from '..//contexts/UserContext';
 import { AuthContext } from "../contexts/AuthContext";
 import Toast from "react-native-toast-message";
 
-export default function LoginComponent() {
+const screenWidth = Dimensions.get('window').width;
+
+
+export default function LoginComponent({randomNumber, backColor, backColorOscuro}) {
 
   const {handleSignIn} = useContext(AuthContext);
 
@@ -76,7 +79,7 @@ export default function LoginComponent() {
 
 
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, backgroundColor: backColor}}>
       <TextInput
         placeholder="Email"
         value={email}
@@ -92,18 +95,21 @@ export default function LoginComponent() {
         secureTextEntry
         style={styles.inputPassword}
       />
-      <TouchableOpacity onPress={handleLogin}><Text style={styles.buttonAcceder}>ACCEDER</Text></TouchableOpacity>
+      <TouchableOpacity onPress={handleLogin}><Text style={{...styles.buttonAcceder, backgroundColor: backColorOscuro}}>ACCEDER</Text></TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F8F6F0',
+    justifyContent: 'center', 
+    alignItems: 'center',
+    width: screenWidth * .9,
+    gap: 10
   },
   input: {
     color: 'grey',
-    padding: 10,
+    padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#DAE3E6',
     outlineStyle: 'none',
@@ -111,21 +117,21 @@ const styles = StyleSheet.create({
     fontSize: 19,
     width: 320,
     fontWeight: '300',
-    backgroundColor: '#fafafa'
+    backgroundColor: '#FFFDF3',
+    borderRadius: 25,
   },
   inputPassword: {
     color: 'grey',
-    padding: 10,
+    padding: 20,
     outlineStyle: 'none',
     fontFamily: 'Roboto',
     fontSize: 19,
     width: 320,
     fontWeight: '300',
-    marginBottom: 15,
-    backgroundColor: '#fafafa'
+    backgroundColor: '#FFFDF3',
+    borderRadius: 25
   },
   buttonAcceder: {
-    backgroundColor: '#4D8CE7',
     width: 320,
     fontFamily: 'Roboto',
     color: '#fafafa',

@@ -6,6 +6,7 @@ import CreateAccountScreen from "../screens/CreateAccountScreen";
 import MainScreen from "../screens/MainScreen";
 import AulaScreen from "../screens/AulaScreen";
 import JuegoScreen from "../screens/JuegoScreen";
+import IniciarJuegoScreen from "../screens/IniciarJuegoScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function AppNavigator() {
         <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="Aula" component={AulaScreen} />
+        <Stack.Screen name="IniciarJuego" component={IniciarJuegoScreen} />
         <Stack.Screen name="Juego" component={JuegoScreen} />
       </Stack.Navigator>
     </NavigationContainer>

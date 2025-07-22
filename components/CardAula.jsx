@@ -46,7 +46,10 @@ export const CardAula = ({color, icono, nombre, apellidoProfesor, id, avatar}) =
                 <View width={40} height={40} justifyContent={'center'} alignItems={'center'}>
                     <CachedSvg uri={avatar} width="40" height="40" />
                 </View>
-                <Text style={styles.apellidoProfesor}>{`Prof. ${apellidoProfesor}`}</Text>
+                <View>
+                    <Text style={{...styles.apellidoProfesor, fontSize: 12}}>{`Prof.`}</Text>
+                    <Text style={{...styles.apellidoProfesor, fontSize: 16}}>{`${apellidoProfesor}`}</Text>
+                </View>
             </View>
             <Svg width={90} height={90} style={styles.curva} viewBox=" -30 -80 60 100" >
             <Path
@@ -62,10 +65,11 @@ export const CardAula = ({color, icono, nombre, apellidoProfesor, id, avatar}) =
 
 const styles = StyleSheet.create({
     container: {
-        width: screenWidth * 0.43,
-        height: screenHeight * 0.28,
+        width: screenWidth * 0.41,
+        height: 220,
         borderRadius: 25,
-        gap: 10
+        gap: 10,
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     cardIcon: {
         width: 50,
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         marginLeft: 10,
         marginTop: 10,
-        backgroundColor:"rgba(250, 250, 250, 0.64)",
+        backgroundColor:"rgba(250, 250, 250, 0.2)",
         padding: 10
     },
     nombre: {
@@ -91,11 +95,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         bottom: 11,
         left: 8,
-        gap: 5,
+        gap: 7,
     },
     apellidoProfesor: {
         color: '#fafafa',
-        fontSize: 16,
         fontFamily: 'Roboto',
         fontWeight: '500',
     },

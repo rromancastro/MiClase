@@ -55,14 +55,14 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
                         <Text style={styles.miMensajeTexto}>{msjData.texto}</Text>
                         <Text style={styles.miMensajeHora}>{horas}:{minutos}</Text>
                     </View>
-                    <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px #DBDCDC'}}>
                         <CachedSvg uri={userData.avatarUrl} width="50" height="50" />
                     </View>
 
                 </TouchableOpacity>
                 :
                 <TouchableOpacity onLongPress={() => setShowEliminar(!showEliminar)} style={styles.otroMensaje}>
-                    <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
+                    <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px #DBDCDC'}}>
                         <CachedSvg uri={msjData.avatarUrl} width="50" height="50" />
                     </View>
                     <View>
@@ -78,7 +78,7 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
             : msjData.tipo == 'juego' ?
                 <View style={styles.otroMensaje}>
                     <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
-                        <Image source={require('../assets/avatars/logo.png')} style={{width: 40, height: 40}}/>
+                        <Image source={require('../assets/avatars/logo.png')} style={{width: 40, height: 40, boxShadow: '2px 2px 0px #DBDCDC'}}/>
                     </View>
                     <View>
                         <Text style={styles.otroMensajeNombre}>MiClase</Text>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginTop: 5,
         flexDirection: 'row',
-        gap: 10,
+        gap: 10
     },
     miMensajeTexto: {
         backgroundColor: '#4A86DF',
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 16,
         color: '#fafafa',
+        boxShadow: '2px 2px 0px #DBDCDC'
     },
     miMensajeHora: {
         fontFamily: 'Roboto',
@@ -142,6 +143,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 16,
         color: '#080807',
+        boxShadow: '2px 2px 0px #DBDCDC'
     },
     otroMensajeHora: {
         fontFamily: 'Roboto',
@@ -158,5 +160,6 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         textAlign: 'center',
+        boxShadow: '2px 2px 0px #DBDCDC'
     }
 })

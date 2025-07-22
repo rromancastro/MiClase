@@ -4,6 +4,7 @@ import { UserProvider } from './contexts/UserContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,6 +20,7 @@ export default function App() {
         <SafeAreaProvider>
             <AppNavigator />
             <Toast />
+            <StatusBar style="dark" />
         </SafeAreaProvider>
       </AuthProvider>
     </UserProvider>
