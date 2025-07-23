@@ -3,7 +3,7 @@ import { useUser } from "../contexts/UserContext";
 import { Loader } from "./Loader";
 
 import { useEffect, useRef, useState } from "react";
-import { Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 
 import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
@@ -11,6 +11,8 @@ import { db } from "../firebase/firebaseConfig";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -71,8 +73,8 @@ export const ChatComponent = ({aulaId}) => {
     }, [mensajes]);
 
 
-    return (<View style={styles.container}>
-        <KeyboardAvoidingView>
+    return (<SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{...styles.container}}>
                 {mensajes.length == 0 ? <Loader /> :<ScrollView ref={scrollViewRef} style={styles.mensajesContainer}>
                     {
                         mensajes.map((msg) => {
@@ -93,8 +95,8 @@ export const ChatComponent = ({aulaId}) => {
                         <FontAwesome name="send" size={20} color="#7F8488" style={styles.sendMensajeButton}/>
                     </TouchableOpacity>
                 </View>
-            </KeyboardAvoidingView>
-            </View>)
+                </KeyboardAvoidingView>
+            </SafeAreaView>)
 }
 
 const styles = StyleSheet.create({

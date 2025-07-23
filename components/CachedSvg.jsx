@@ -31,7 +31,9 @@ export const CachedSvg = ({ uri, width = 200, height = 200 }) => {
       {svgXml ? (
         <SvgXml xml={svgXml} width={width} height={height} />
       ) : (
-        <ActivityIndicator size="small" color={'grey'} />
+        <View style={{width: width, height: height, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="small" color={'grey'} />
+        </View>
       )}
     </View>
   );

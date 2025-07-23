@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     backgroundColor: '#FFFDF3',
     borderRadius: 25,
+    boxShadow: '3px 3px 0px #DBDCDC'
   },
   inputPassword: {
     color: 'grey',
@@ -129,7 +130,8 @@ const styles = StyleSheet.create({
     width: 320,
     fontWeight: '300',
     backgroundColor: '#FFFDF3',
-    borderRadius: 25
+    borderRadius: 25,
+    boxShadow: '3px 3px 0px #DBDCDC'
   },
   buttonAcceder: {
     width: 320,
@@ -142,6 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 20,
     fontWeight: '600',
-    textAlign: 'center', 
+    textAlign: 'center',
+    boxShadow: '3px 3px 0px #a5a5a581'
   }
 });

@@ -59,7 +59,7 @@ export const AulaComponent = ({dataAula}) => {
                         </TouchableOpacity>
                     
                     : null}
-                    <TouchableOpacity onPress={() => setSection('users')} style={styles.mainItem}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Users", {dataAula: dataAula})} style={styles.mainItem}>
                         <FontAwesome5 name="users" width={40} size={30} color="#516169" />
                         <Text style={styles.mainItemText}>Participantes</Text>
                     </TouchableOpacity>
@@ -75,7 +75,7 @@ export const AulaComponent = ({dataAula}) => {
                         </TouchableOpacity>
                     
                     : null}
-                    <TouchableOpacity onPress={() => setSection('calendario')} style={styles.mainItem}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Calendario", {dataAula: dataAula})} style={styles.mainItem}>
                         <FontAwesome6 name="calendar-day" size={34} color="#EB644A" />
                         <Text style={styles.mainItemText}>Calendario</Text>
                     </TouchableOpacity>
@@ -89,8 +89,6 @@ export const AulaComponent = ({dataAula}) => {
                     </TouchableOpacity>
                 </View>
             </View> :
-            section == 'users' ? <UsersAula dataAula={dataAula}/> :
-            section == 'calendario' ? <Calendario dataAula={dataAula} /> : 
             section == 'editarAula' ? <EditarAula dataAula={dataAula}/> : null
         }
     </View>)
