@@ -20,9 +20,6 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{...styles.container, backgroundColor: backColors[randomNumber - 1]}}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{...styles.container, margin: 20}}> 
           {randomNumber === 1 ? <Image source={require('../assets/bichitos/1.png')} style={{width: screenWidth * .9, height: 300, objectFit: 'cover',}}/>
           : randomNumber === 2 ? <Image source={require('../assets/bichitos/2.png')} style={{width: screenWidth * .9, height: 300, objectFit: 'cover',}}/>
           : randomNumber === 3 ? <Image source={require('../assets/bichitos/3.png')} style={{width: screenWidth * .9, height: 300, objectFit: 'cover',}}/>
@@ -38,7 +35,6 @@ export default function LoginScreen({ navigation }) {
           <Text style={{fontSize: 18, fontFamily: 'Roboto', color: '#fafafa', marginTop: 30}}>¿No tienes cuenta?</Text>
           <TouchableOpacity onPress={() => navigation.navigate("CreateAccount")}><Text style={{fontSize: 18, fontFamily: 'Roboto', color: backColorsOscuros[randomNumber - 1], marginTop: 5, marginBottom: 20}}>Crear cuenta</Text></TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

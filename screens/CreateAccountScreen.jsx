@@ -439,37 +439,32 @@ const styles = StyleSheet.create({
   rolContainer: {
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
     marginBottom: 10,
     width: 340,
-    height: 50,
     gap: 10,
     paddingHorizontal:20,
     paddingVertical: 10
   },
   pickerLabel: {
     fontSize: 19,
-    fontWeight: '700',
+    fontWeight: 700,
     backgroundColor: '#FFFFFF',
     color: '#7E848F',
-    fontWeight: '700',
+    fontWeight: 700,
     fontFamily: 'Roboto',
   },
   picker: {
     border: 'none',
     backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
     fontFamily: 'Roboto',
     fontSize: 19,
     outlineStyle: 'none',
     color: 'grey',
     width: 250,
     height: 50,
-  },
-  errorText: {
-    fontSize: 19,
-    fontFamily: 'Roboto',
-    color: 'red',
-    padding: 10,
   }
 });

@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { StatusBar } from 'expo-status-bar';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -18,9 +19,12 @@ export default function App() {
     <UserProvider>
       <AuthProvider>
         <SafeAreaProvider>
-            <AppNavigator />
-            <Toast />
-            <StatusBar style="dark" />
+              <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+                <AppNavigator />
+                <Toast />
+                <StatusBar style="dark" />
+              </KeyboardAvoidingView>
         </SafeAreaProvider>
       </AuthProvider>
     </UserProvider>
