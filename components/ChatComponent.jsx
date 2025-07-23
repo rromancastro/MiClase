@@ -101,7 +101,8 @@ export const ChatComponent = ({aulaId}) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#F6F6F5'
     },
     nav: {
         flexDirection: 'row',

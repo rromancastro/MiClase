@@ -55,16 +55,16 @@ export const MensajeComponent = ({ msjData, aulaId }) => {
                         <Text style={styles.miMensajeTexto}>{msjData.texto}</Text>
                         <Text style={styles.miMensajeHora}>{horas}:{minutos}</Text>
                     </View>
-                    <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px #DBDCDC'}}>
+                    <TouchableOpacity onPress={() => navigation.navigate("UserInfo", {userId: userData.id})} style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px #DBDCDC'}}>
                         <CachedSvg uri={userData.avatarUrl} width="50" height="50" />
-                    </View>
+                    </TouchableOpacity>
 
                 </TouchableOpacity>
                 :
                 <TouchableOpacity onLongPress={() => setShowEliminar(!showEliminar)} style={styles.otroMensaje}>
-                    <View style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px #DBDCDC'}}>
+                    <TouchableOpacity onPress={() => navigation.navigate("UserInfo", {userId: msjData.senderId})} style={{width: 40, height: 40, backgroundColor: '#E2E5E9', borderRadius: 20, alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px #DBDCDC'}}>
                         <CachedSvg uri={msjData.avatarUrl} width="50" height="50" />
-                    </View>
+                    </TouchableOpacity>
                     <View>
                         <Text style={styles.otroMensajeNombre}>{msjData.senderName}</Text>
                         <Text style={styles.otroMensajeTexto}>{msjData.texto}</Text>

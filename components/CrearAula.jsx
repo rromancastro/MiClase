@@ -15,6 +15,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Toast from "react-native-toast-message";
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -26,7 +27,6 @@ export const CrearAula = () => {
 
     //logica personalizacion
     const [nombreAula, setNombreAula] = useState('')
-    const [nombreAulaError, setNombreAulaError] = useState(false)
 
     const [icon, setIcon] = useState('book')
 
@@ -59,7 +59,6 @@ export const CrearAula = () => {
     //subir a firestore
     const handleCrearAula = async () => {
         if (nombreAula.length > 0) {
-            setNombreAulaError(false)
             const codigo = await generateCodeAula();
 
             try {
@@ -96,7 +95,11 @@ export const CrearAula = () => {
                 console.error("Error al agregar documento:", error);
             }
         } else {
-            setNombreAulaError(true)
+            Toast.show({
+                type: 'error',
+                text1: 'Error al crear el aula',
+                text2: 'El nombre no puede estar vacío',
+            });
         }
         
     }

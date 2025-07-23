@@ -1,11 +1,18 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useUser } from "../contexts/UserContext";
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
+import { CachedSvg } from "./CachedSvg";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
+
+
+const screenWidth = Dimensions.get('window').width;
 
 export const EditarPerfil = () => {
 
@@ -17,21 +24,29 @@ export const EditarPerfil = () => {
     const [apellido, setApellido] = useState(userData.apellido)
 
     const handleGuardarCambios = async () => {
-        const docRef = doc(db, 'users', userData.id);
-        try {
-            await updateDoc(docRef, {
-                nombre: nombre,
-                apellido: apellido
+        if (nombre.length <= 0 || apellido.length <= 0) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error al editar perfil',
+                text2: 'El nombre o apellido no puede estar vacío',
             });
-            setUserData({
-                ...userData,
-                nombre: nombre,
-                apellido: apellido
-            })
-            console.log('Documento actualizado correctamente');
-            navigation.replace("Main")
-        } catch (error) {
-            console.error('Error al actualizar el documento:', error);
+        } else {
+            const docRef = doc(db, 'users', userData.id);
+            try {
+                await updateDoc(docRef, {
+                    nombre: nombre,
+                    apellido: apellido
+                });
+                setUserData({
+                    ...userData,
+                    nombre: nombre,
+                    apellido: apellido
+                })
+                console.log('Documento actualizado correctamente');
+                navigation.replace("Main")
+            } catch (error) {
+                console.error('Error al actualizar el documento:', error);
+            }
         }
     }
 
@@ -41,21 +56,46 @@ export const EditarPerfil = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <FontAwesome6 name="user" size={60} color="white" style={styles.userIcon}/>
-            <Text style={styles.title}>Mi Cuenta</Text>
-            <View style={styles.inputContainer}>
-                <TextInput style={styles.input} onChangeText={setNombre} value={nombre}/>
-                <FontAwesome name="pencil" size={24} color="#363838" />
-            </View>
-            <View style={styles.inputContainer}>
-                <TextInput style={styles.input} onChangeText={setApellido} value={apellido}/>
-                <FontAwesome name="pencil" size={24} color="#363838" />
-            </View>
-            <Text style={styles.email}>{userData.email}</Text>
-            <TouchableOpacity onPress={handleGuardarCambios}><Text style={styles.buttonGuardar}>Guardar cambios</Text></TouchableOpacity>
-            <TouchableOpacity onPress={handleLogout}><Text style={styles.buttonCerrarSesion}>Cerrar sesión</Text></TouchableOpacity>
-        </View>
+            <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+        <SafeAreaView style={styles.container}>
+                <View style={styles.userAvatar}>
+                    <CachedSvg uri={userData.avatarUrl} width="170" height="170" />
+                </View>
+                <View style={{justifyContent: 'center', alignItems: 'center', marginVertical: 25}}>
+                    <Text style={{fontFamily: 'Roboto', fontWeight: 'bold', color: '#132337', fontSize: 44, lineHeight: 44}}>{userData.nombre}</Text>
+                    <Text style={{fontFamily: 'Roboto', fontWeight: 'bold', color: '#132337', fontSize: 44, lineHeight: 44}}>{userData.apellido}</Text>
+                </View>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
+                    <View style={{...styles.userInfoItem, width: screenWidth * .4, borderRightColor: '#ecececff', borderRightWidth: 1}}>
+                        <Text style={styles.userInfoItemLabel}>Nombre  <FontAwesome name="pencil" size={20} color="#363838" /></Text>
+                        <TextInput style={styles.userInfoItemValue} onChangeText={setNombre} value={nombre}/>
+                    </View>
+                    <View style={{...styles.userInfoItem, width: screenWidth * .4, paddingLeft: 15}}>
+                        <Text style={styles.userInfoItemLabel}>Apellido  <FontAwesome name="pencil" size={20} color="#363838" /></Text>
+                        <TextInput style={styles.userInfoItemValue} onChangeText={setApellido} value={apellido}/>
+                    </View>
+                    <View style={{...styles.userInfoItem, width: screenWidth * .8}}>
+                        <Text style={styles.userInfoItemLabel}>Puntos Obtenidos</Text>
+                        <Text style={styles.userInfoItemValue}>{userData.puntosObtenidos ? userData.puntosObtenidos : 0} <MaterialCommunityIcons name="medal" size={24} color="#77848D" /></Text>
+                    </View>
+                    <View style={{...styles.userInfoItem, width: screenWidth * .8}}>
+                        <Text style={styles.userInfoItemLabel}>Email</Text>
+                        <Text style={styles.userInfoItemValue}>{userData.email}</Text>
+                    </View>
+                    <View style={{...styles.userInfoItem, width: screenWidth * .8}}>
+                        <Text style={styles.userInfoItemLabel}>Rol</Text>
+                        <Text style={styles.userInfoItemValue}>{userData.rol.charAt(0).toUpperCase() + userData.rol.slice(1)}</Text>
+                    </View>
+                    <View style={{...styles.userInfoItem, width: screenWidth * .8}}>
+                        <Text style={styles.userInfoItemLabel}>Id del {userData.rol}</Text>
+                        <Text style={styles.userInfoItemValue}>{userData.id}</Text>
+                    </View>
+                </View>
+                <TouchableOpacity onPress={handleGuardarCambios}><Text style={styles.buttonGuardar}>Guardar cambios</Text></TouchableOpacity>
+                <TouchableOpacity onPress={handleLogout}><Text style={styles.buttonCerrarSesion}>Cerrar sesión</Text></TouchableOpacity>
+            
+        </SafeAreaView>
+            </ScrollView>
     )
 }
 
@@ -139,5 +179,26 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '500',
         textAlign: 'center',
+    },
+    userAvatar: {
+        width: 170,
+        height: 170,
+        alignSelf: 'center',
+    },
+    userInfoItem: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#ecececff',
+        paddingVertical: 10
+    },
+    userInfoItemLabel: {
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        color: '#77848D'
+    },
+    userInfoItemValue: {
+        fontFamily: 'Roboto',
+        fontSize: 24,
+        color: '#132337',
+        fontWeight: 'bold'
     }
 })

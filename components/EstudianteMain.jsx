@@ -12,7 +12,6 @@ import { EditarPerfil } from "./EditarPerfil";
 import { Loader } from "./Loader";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { IngresarAlAula } from "./IngresarAlAula";
-import { limpiarNotificaciones, programarNotificacion, solicitarPermisosNotificaciones } from "../utils/notifications";
 import { CardFecha } from "./CardFecha";
 
 const screenWidth = Dimensions.get('window').width;
@@ -47,8 +46,8 @@ export const EstudianteMain = () => {
     useEffect(() => {
     const cargarAulas = async () => {
         const promesas = userAulasIds.map(async (id) => {
-        const data = await getAulaById(id);
-        return { id, ...data };
+            const data = await getAulaById(id);
+            return { id, ...data };
         });
 
         const resultados = await Promise.all(promesas);

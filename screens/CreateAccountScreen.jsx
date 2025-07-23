@@ -99,7 +99,8 @@ export default function CreateAccountScreen() {
             nombre: nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase(),
             apellido: apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase(),
             aulas: [],
-            avatarUrl: avatarUrl
+            avatarUrl: avatarUrl,
+            puntosObtenidos: 0
             });
             console.log("Documento agregado con ID:", docRef.id);
         } catch (error) {

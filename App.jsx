@@ -19,12 +19,12 @@ export default function App() {
     <UserProvider>
       <AuthProvider>
         <SafeAreaProvider>
-              <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+              {/* <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}> */}
                 <AppNavigator />
                 <Toast />
                 <StatusBar style="dark" />
-              </KeyboardAvoidingView>
+              {/* </KeyboardAvoidingView> */}
         </SafeAreaProvider>
       </AuthProvider>
     </UserProvider>

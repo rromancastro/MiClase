@@ -45,8 +45,8 @@ export const ProfesorMain = () => {
     useEffect(() => {
     const cargarAulas = async () => {
         const promesas = userAulasIds.map(async (id) => {
-        const data = await getAulaById(id);
-        return { id, ...data };
+            const data = await getAulaById(id);
+            return { id, ...data };
         });
 
         const resultados = await Promise.all(promesas);

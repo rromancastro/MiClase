@@ -1,9 +1,6 @@
-import { Dimensions, Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { Dimensions, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LoginComponent from '../components/LoginInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as NavigationBar from 'expo-navigation-bar';
-import { useEffect } from 'react';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -14,7 +11,7 @@ export default function LoginScreen({ navigation }) {
   const randomNumber = Math.floor(Math.random() * 5) + 1;  
 
   const backColors = ['#FFD953', '#FFDB4E', '#FE8062', '#DCCAFF', '#FF6B87']
-  const backColorsImage = ['#00B461', '#F87218', '#2A91DE', '#FF762C', '#924CC7']
+  const backColorsImage = ['#10B269', '#F87218', '#2A91DE', '#FF762C', '#924CC7']
   const backColorsOscuros = ['#00744C', '#a73407ff', '#09448dff', '#a73407ff', '#673091ff'] 
   
 
