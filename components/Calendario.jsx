@@ -161,11 +161,11 @@ export const Calendario = ({ dataAula }) => {
                         <MaterialIcons name="add-circle" size={16} color="#577AB8" style={{position: 'absolute', backgroundColor: 'white', padding: 1, borderRadius: 25, bottom: 0, right: 0}} />
                     </View>
                     <View>
-                        <TextInput value={nombreFecha} onChangeText={setNombreFecha} placeholder="Nombre de la fecha" style={{fontFamily: 'Roboto', fontSize: 16, width: screenWidth * .6, }}/>
-                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                        <TextInput value={nombreFecha} onChangeText={setNombreFecha} placeholder="Nombre de la fecha" style={{fontFamily: 'Roboto', fontSize: 16, width: screenWidth * .6,}}/>
+                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 100}}>
                             <Picker
                                 selectedValue={diaFecha}
-                                style={{width: 100}}
+                                style={{width: 100,}}
                                 onValueChange={(itemValue) => setDiaFecha(itemValue)}
                             >
                                 <Picker.Item label="1" value="01" />
