@@ -22,7 +22,7 @@ const screenHeight = Dimensions.get('window').height;
 // utilidad para generar la URL del avatar
 const buildAvatarUrl = (config) => {
   const params = new URLSearchParams(config).toString();
-  
+
   return `https://avataaars.io/?avatarStyle=Circle&${params}`;
 };
 
@@ -74,16 +74,16 @@ export default function CreateAccountScreen() {
         mouthType: 'Smile',
         skinColor: 'Light',
       };
-    
+
       const avatarUrl = buildAvatarUrl(avatarConfig);
-    
+
       const updateTrait = (trait, value) => {
         setAvatarConfig((prev) => ({
           ...prev,
           [trait]: value,
         }));
         console.log(avatarUrl);
-        
+
       };
 
       //logica barra avatar
@@ -142,7 +142,7 @@ export default function CreateAccountScreen() {
                 Toast.show({
                     type: 'error',
                     text1: 'Error al crear usuario',
-                    text2: 'El correo es invalido', 
+                    text2: 'El correo es invalido',
                 });
             } else {
                 if (password !== password2) {
@@ -170,7 +170,7 @@ export default function CreateAccountScreen() {
         }
     }
         }
-        
+
     }
 
     return (<SafeAreaView style={{flex: 1, backgroundColor: '#F6F6F5'}}>
@@ -181,8 +181,10 @@ export default function CreateAccountScreen() {
                             <Loader />
                         </View> : null
                     }
-                    <SvgUri onLoad={() => setLoadingAvatar(false)} width="200" height="200" uri={avatarUrl} marginTop={30}/>
-        
+                    <View style={{marginTop: 30}}>
+                        <SvgUri onLoad={() => setLoadingAvatar(false)} width="200" height="200" uri={avatarUrl}/>
+                    </View>
+
                     <Text style={styles.title}>Crea tu cuenta</Text>
                     <View style={{flexDirection: 'row', marginBottom: 20, width: screenWidth * .7, backgroundColor: '#BFC3C4', borderRadius: 50}}>
                                                 <TouchableOpacity onPress={() => setSection('data')} style={{justifyContent: 'center', width: '50%', alignItems: 'center',height: screenHeight * .0400, backgroundColor: section === 'data' ? '#39699E' : '#BFC3C4', borderRadius: 50}}>
@@ -190,7 +192,7 @@ export default function CreateAccountScreen() {
                                                 </TouchableOpacity>
                                                 <TouchableOpacity onPress={() => setSection('avatar')} style={{justifyContent: 'center', width: '50%', alignItems: 'center',height: screenHeight * .0400, backgroundColor: section === 'avatar' ? '#39699E' : '#BFC3C4', borderRadius: 50}}>
                                                     <Text style={{...styles.mainNavBarText, fontWeight: 800,color: section === 'avatar' ? '#FAFAFA' : '#273D5E'}}>Avatar</Text>
-                                                </TouchableOpacity>                    </View>
+                                                </TouchableOpacity></View>
                     {section == 'avatar' ? <View >
                         <View style={{height: 30}}>
                             <FlatList
@@ -217,7 +219,7 @@ export default function CreateAccountScreen() {
                             <TouchableOpacity onPress={() => updateTrait('skinColor', 'Tanned')} style={{...styles.buttonPiel, backgroundColor: "#FD9841"}} />
                             <TouchableOpacity onPress={() => updateTrait('skinColor', 'Yellow')} style={{...styles.buttonPiel, backgroundColor: "#F8D25C"}} />
                         </View> :
-        
+
                         avatarSection === "Peinado" ?<View>
                         <View style={{flexDirection: 'row', gap: 20, paddingHorizontal: 20, justifyContent: 'center', alignItems: 'center'}}>
                             <TouchableOpacity style={{...styles.buttonColor, backgroundColor: 'black'}}  onPress={() => updateTrait('hairColor', 'Black')}/>
@@ -237,7 +239,7 @@ export default function CreateAccountScreen() {
                             <TouchableOpacity onPress={() => updateTrait('topType', 'ShortHairShortWaved')}><Image source={require('../assets/avatars/pelo7.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
                             <TouchableOpacity onPress={() => updateTrait('topType', 'ShortHairTheCaesar')}><Image source={require('../assets/avatars/pelo8.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
                             <TouchableOpacity onPress={() => updateTrait('topType', 'ShortHairShortRound')}><Image source={require('../assets/avatars/pelo9.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
-                        </View> </View> :
+                        </View></View> :
                         avatarSection === "Ojos" ?
                         <View style={{flexDirection: 'row', marginTop: 20 ,gap: 20, alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
                             <TouchableOpacity onPress={() => updateTrait('eyeType', 'Default')}><Image source={require('../assets/avatars/ojos1.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
@@ -270,7 +272,7 @@ export default function CreateAccountScreen() {
                             <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Sunglasses')}><Image source={require('../assets/avatars/lentes6.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
                             <TouchableOpacity onPress={() => updateTrait('accessoriesType', 'Wayfarers')}><Image source={require('../assets/avatars/lentes7.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
                         </View> :
-        
+
                         avatarSection === "Vestimenta" ?<View>
                         <View style={{flexDirection: 'row', gap: 20, paddingHorizontal: 20, justifyContent: 'center', alignItems: 'center'}}>
                             <TouchableOpacity style={{...styles.buttonColor, backgroundColor: '#262E33'}}  onPress={() => updateTrait('clotheColor', 'Black')}/>
@@ -288,12 +290,13 @@ export default function CreateAccountScreen() {
                             <TouchableOpacity onPress={() => updateTrait('clotheType', 'Overall')}><Image source={require('../assets/avatars/ropa6.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
                             <TouchableOpacity onPress={() => updateTrait('clotheType', 'ShirtCrewNeck')}><Image source={require('../assets/avatars/ropa7.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
                             <TouchableOpacity onPress={() => updateTrait('clotheType', 'ShirtVNeck')}><Image source={require('../assets/avatars/ropa9.png')} style={styles.avatarConfigButton}/></TouchableOpacity>
-                        </View> </View> : null
-        
+                        </View></View> : null
+
                         }
-        
+
                     </View>
-                    : <View>
+                    :
+                    <View>
                     <View style={styles.inputContainer}>
                         <FontAwesome5 name="user-alt" size={24} color="#7E848F" />
                         <TextInput style={styles.input}
@@ -301,7 +304,7 @@ export default function CreateAccountScreen() {
                         value={nombre}
                         onChangeText={setNombre}/>
                     </View>
-        
+
                     <View style={styles.inputContainer}>
                         <FontAwesome5 name="user-alt" size={24} color="#7E848F" />
                         <TextInput style={styles.input}
@@ -309,7 +312,7 @@ export default function CreateAccountScreen() {
                         value={apellido}
                         onChangeText={setApellido}/>
                     </View>
-        
+
                     <View style={styles.inputContainer}>
                         <Ionicons name="mail-outline" size={24} color="#7E848F" />
                         <TextInput style={styles.input}
@@ -319,7 +322,7 @@ export default function CreateAccountScreen() {
                         autoCapitalize="none"
                         keyboardType="email-address"/>
                     </View>
-        
+
                     <View style={styles.inputContainer}>
                         <Ionicons name="mail-outline" size={24} color="#7E848F" />
                         <TextInput style={styles.input}
@@ -329,7 +332,7 @@ export default function CreateAccountScreen() {
                         autoCapitalize="none"
                         keyboardType="email-address"/>
                     </View>
-        
+
                     <View style={styles.inputContainer}>
                         <FontAwesome name="lock" size={24} color="#7E848F" />
                         <TextInput style={styles.input}
@@ -338,7 +341,7 @@ export default function CreateAccountScreen() {
                         onChangeText={setPassword}
                         secureTextEntry/>
                     </View>
-        
+
                     <View style={styles.inputContainer}>
                         <FontAwesome name="lock" size={24} color="#7E848F" />
                         <TextInput style={styles.input}
@@ -347,7 +350,7 @@ export default function CreateAccountScreen() {
                         onChangeText={setPassword2}
                         secureTextEntry/>
                     </View>
-        
+
                     <View style={styles.rolContainer}>
                         <Text style={styles.pickerLabel}>Rol:</Text>
                         <Picker
@@ -360,9 +363,9 @@ export default function CreateAccountScreen() {
                         </Picker>
                     </View>
                     <TouchableOpacity onPress={handleCreateUser}><Text style={{...styles.buttonAcceder, marginVertical: 20, alignSelf: 'center'}}>Crear cuenta</Text></TouchableOpacity>
-        
+
                     </View>}
-        
+
         </View>
         </ScrollView>
     </SafeAreaView>)
@@ -440,6 +443,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
     width: 340,
+    height: 50,
     gap: 10,
     paddingHorizontal:20,
     paddingVertical: 10

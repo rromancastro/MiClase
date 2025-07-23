@@ -83,17 +83,15 @@ export const AulaComponent = ({dataAula}) => {
 
                 <View style={{gap: 10, marginBottom: 20}}>    
                     <Text style={styles.subtitle}>Comunicación</Text>
-                    <TouchableOpacity onPress={() => setSection('chat')} style={styles.mainItem}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Chat", {aulaId: dataAula.id})} style={styles.mainItem}>
                         <Entypo name="chat" size={34} color="#597CB9" />
                         <Text style={styles.mainItemText}>Chat grupal</Text>
                     </TouchableOpacity>
                 </View>
             </View> :
-            section == 'chat' ? <ChatComponent aulaId={aulaId} /> :
             section == 'users' ? <UsersAula dataAula={dataAula}/> :
             section == 'calendario' ? <Calendario dataAula={dataAula} /> : 
-            section == 'editarAula' ? <EditarAula dataAula={dataAula}/> : 
-            section == 'iniciarJuego' ? <IniciarJuego  aulaId={aulaId}/> : null
+            section == 'editarAula' ? <EditarAula dataAula={dataAula}/> : null
         }
     </View>)
 }

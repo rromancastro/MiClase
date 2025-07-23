@@ -3,7 +3,7 @@ import { useUser } from "../contexts/UserContext";
 import { Loader } from "./Loader";
 
 import { useEffect, useRef, useState } from "react";
-import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 
 import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
@@ -72,6 +72,7 @@ export const ChatComponent = ({aulaId}) => {
 
 
     return (<View style={styles.container}>
+        <KeyboardAvoidingView>
                 {mensajes.length == 0 ? <Loader /> :<ScrollView ref={scrollViewRef} style={styles.mensajesContainer}>
                     {
                         mensajes.map((msg) => {
@@ -92,6 +93,7 @@ export const ChatComponent = ({aulaId}) => {
                         <FontAwesome name="send" size={20} color="#7F8488" style={styles.sendMensajeButton}/>
                     </TouchableOpacity>
                 </View>
+            </KeyboardAvoidingView>
             </View>)
 }
 

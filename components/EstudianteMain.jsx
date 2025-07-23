@@ -54,7 +54,11 @@ export const EstudianteMain = () => {
         const resultados = await Promise.all(promesas);
         setAulas(resultados);
         setLoading(false);
-        setFechas(resultados.map(aula => aula.fechas).flat());
+        setFechas(
+            resultados
+                .map(aula => aula.fechas.map(fecha => ({ ...fecha, nombreAula: aula.nombre })))
+                .flat()
+            );
 
     };
 
@@ -88,10 +92,10 @@ export const EstudianteMain = () => {
                     }</Text>
                     <Text style={styles.titleMain}>{`${userData.nombre}! 😁`}</Text>
                     <View style={styles.mainNavBar}>
-                        <TouchableOpacity onPress={() => setMainSection('aulas')} style={{justifyContent: 'center', width: '50%', alignItems: 'center',height: screenHeight * .055, backgroundColor: mainSection === 'aulas' ? '#39699E' : '#BFC3C4', borderRadius: 50}}>
+                        <TouchableOpacity onPress={() => setMainSection('aulas')} style={{justifyContent: 'center', width: '48%', alignItems: 'center',height: screenHeight * .055, backgroundColor: mainSection === 'aulas' ? '#39699E' : '#fafafa', borderRadius: 50, boxShadow: mainSection === 'aulas' ? '4px 1px 0px #DBDCDC, 3px 3px 0px #DBDCDC ' : null}}>
                             <Text style={{...styles.mainNavBarText, fontWeight: 800,color: mainSection === 'aulas' ? '#FAFAFA' : '#273D5E'}}>Tus aulas</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setMainSection('fechas')} style={{justifyContent: 'center', width: '50%', alignItems: 'center',height: screenHeight * .055, backgroundColor: mainSection === 'fechas' ? '#39699E' : '#BFC3C4', borderRadius: 50}}>
+                        <TouchableOpacity onPress={() => setMainSection('fechas')} style={{justifyContent: 'center', width: '48%', alignItems: 'center',height: screenHeight * .055, backgroundColor: mainSection === 'fechas' ? '#39699E' : '#fafafa', borderRadius: 50, boxShadow: mainSection === 'fechas' ? '-4px 1px 0px #DBDCDC, -3px 3px 0px #DBDCDC' : null}}>
                             <Text style={{...styles.mainNavBarText, fontWeight: 800,color: mainSection === 'fechas' ? '#FAFAFA' : '#273D5E'}}>Fechas</Text>
                         </TouchableOpacity>
                     </View>
@@ -165,12 +169,13 @@ const styles = StyleSheet.create({
     },
     mainNavBar: {
         flexDirection: 'row',
-        backgroundColor: '#BFC3C4',
+        backgroundColor: '#fafafa',
         height: screenHeight * .055,
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginVertical: 15
+        marginVertical: 15,
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     mainNavBarText: {
         fontFamily: 'Roboto',
@@ -190,6 +195,7 @@ const styles = StyleSheet.create({
         height: screenHeight * .07,
         backgroundColor: '#39699E',
         borderRadius: 50,
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     utilityesButton: {
         alignItems: 'center',

@@ -92,9 +92,7 @@ const styles = StyleSheet.create({
     input: {
         width: screenWidth * 0.85,
         height: 70,
-        borderWidth: 1,
         outlineStyle: 'none',
-        borderColor: '#E3E8EC',
         borderRadius: 20,
         fontFamily: 'Roboto',
         placeholder: 'grey',
@@ -102,6 +100,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#272625',
         marginVertical: 10,
+        backgroundColor: '#FAFAFA',
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
     crearButtonText: {
         color: "#fafafa",
@@ -114,5 +114,6 @@ const styles = StyleSheet.create({
         padding: 20,
         textAlign: 'center',
         fontWeight: '700',
+        boxShadow: '3px 3px 0px #DBDCDC'
     },
 })

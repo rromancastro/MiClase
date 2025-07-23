@@ -7,6 +7,7 @@ import MainScreen from "../screens/MainScreen";
 import AulaScreen from "../screens/AulaScreen";
 import JuegoScreen from "../screens/JuegoScreen";
 import IniciarJuegoScreen from "../screens/IniciarJuegoScreen";
+import ChatScreen from "../screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Aula" component={AulaScreen} />
         <Stack.Screen name="IniciarJuego" component={IniciarJuegoScreen} />
         <Stack.Screen name="Juego" component={JuegoScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

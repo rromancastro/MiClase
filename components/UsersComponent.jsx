@@ -48,15 +48,15 @@ export const UsersAula = ({dataAula}) => {
 
                 <Text style={styles.subtitle}>👨‍🏫 Profesor/res: 👩‍🏫</Text>
                 {
-                    profesores.map((profesor) => {
+                    profesores.map((profesor, index) => {
                         return (
-                            <Text key={profesor} style={styles.userItem}>{profesor}</Text>
+                            <Text key={index} style={styles.userItem}>{profesor}</Text>
                         )
                     })
                 }
                 <Text style={styles.subtitle}>🧑‍🎓 Alumnos: 👩‍🎓</Text>
                 {
-                    userData.rol === "profesor" ? estudiantes.map((estudiante) => {
+                    userData.rol === "profesor" ? estudiantes.map((estudiante, index) => {
                         return (<View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10}}>
                             <TouchableOpacity onPress={ () =>
                                 Alert.alert(
@@ -68,11 +68,11 @@ export const UsersAula = ({dataAula}) => {
                                     ]
                                 )
                             }><Entypo name="circle-with-cross" size={24} color="red" /></TouchableOpacity>
-                            <Text key={estudiante} style={styles.userItem}>{estudiante.nombre} {estudiante.apellido}</Text>
+                            <Text key={index} style={styles.userItem}>{estudiante.nombre} {estudiante.apellido}</Text>
                         </View>)
-                    }) : estudiantes.map((estudiante) => {
+                    }) : estudiantes.map((estudiante, index) => {
                         return (
-                            <Text key={estudiante} style={styles.userItem}>{estudiante.nombre} {estudiante.apellido}</Text>
+                            <Text key={index} style={styles.userItem}>{estudiante.nombre} {estudiante.apellido}</Text>
                         )
                     })
                 }
